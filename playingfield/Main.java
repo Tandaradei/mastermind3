@@ -33,7 +33,7 @@ public class Main extends JFrame{
     }
     
     private void initComponents(){
-        playingField = new PlayingField(colors, codeLength);
+        playingField = new PlayingField(true, colors, codeLength);
         add(playingField);
         revalidate();
     }

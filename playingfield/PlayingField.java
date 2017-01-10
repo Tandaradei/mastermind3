@@ -21,6 +21,7 @@ import javax.swing.JScrollPane;
 /**
  *
  * @author laurin.agostini
+ * 
  */
 public class PlayingField extends JPanel {
 
@@ -29,21 +30,23 @@ public class PlayingField extends JPanel {
     int codeLength = 4;
     String lastCode = "";
     String colors;
-    
-    Color[] colorTable = {Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW};
+    Boolean isServer = false;
     //String currentCode = "aaaa";
     JComboBox[] comboBoxes;
     /**
      * Creates new form PlayingField
+     * @param isServer display playingField as Server or Client?
+     * @param colors substring of all colors to play with
+     * @param codeLength length of code to guess
      */
-    public PlayingField(String colors, int codeLength) {
+    public PlayingField(boolean isServer, String colors, int codeLength) {
+    	this.isServer = isServer;
         this.colors = colors;
         this.codeLength = codeLength;
         comboBoxes = new JComboBox[codeLength];
         initComponents();
         initActivePane();
         initHistory();
-        System.out.println("PlayingField created with " + getComponentCount() + " components");
     }
 
     /**
@@ -117,20 +120,39 @@ public class PlayingField extends JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Performs action when ?addButton? was clicked
+     * @param evt
+     */
+    //TODO rename to sendButton
     private void addButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addButtonMouseClicked
         String code = "";
         for(int i = 0; i < codeLength; ++i){
             code += comboBoxes[i].getSelectedItem();
         }
-        String response = "";
+        
+        if(isServer){
+        	for(int i = 0; i < codeLength; ++i){
+                comboBoxes[i].setEnabled(false);;
+            }
+        	//server.setCode(code);
+        	//server.startGame();
+        }
+        else {
+        	String response = "";
 
-        //response = client.sendCode(code);
-        lastCode = code;
-        addToHistory(code, response);
+            //response = client.sendCode(code);
+        	lastCode = code;
+        	addToHistory(code, response);
+        }
         addButton.setEnabled(false);
     }//GEN-LAST:event_addButtonMouseClicked
 
-    
+    /**
+     * returns Color.BLACK for 'B' or Color.WHITE
+     * @param input
+     * @return
+     */
     private Color charToColorResponse(char input){
         if(input == 'B'){
             return Color.black;
@@ -139,6 +161,13 @@ public class PlayingField extends JPanel {
         
     }
     
+    /**
+     * Returns new JPanel with number, and graphical representation of code and response
+     * @param code code to render
+     * @param response response to render
+     * @param index number in history
+     * @return
+     */
     private JPanel getListEntryRendered(String code, String response, int index){
         JPanel entry = new JPanel();
         entry.add(new JLabel(((Integer)(index)).toString()));
@@ -162,6 +191,11 @@ public class PlayingField extends JPanel {
         return entry;
     }
     
+    /**
+     * Adds a code and the response to the history view
+     * @param code 
+     * @param response
+     */
     private void addToHistory(String code, String response){
         historyCount++;
         GridBagConstraints gbc = new GridBagConstraints();
@@ -172,6 +206,9 @@ public class PlayingField extends JPanel {
         revalidate();
     }
     
+    /**
+     * Initializes the history
+     */
     private void initHistory(){
         historyPane.setLayout(new BorderLayout());
         historyPane.setPreferredSize(new java.awt.Dimension(400, 400));
@@ -186,6 +223,9 @@ public class PlayingField extends JPanel {
         revalidate();
     }
     
+    /**
+     * Initializes the activePane with JComboBoxes
+     */
     private void initActivePane(){
         String[] array = colors.split("(?!^)");
         for(int i = 0; i < codeLength; ++i){
@@ -201,13 +241,15 @@ public class PlayingField extends JPanel {
         revalidate();
     }
     
+    /**
+     * Called if one of the combo boxes was changed
+     */
     public void codeChanged(){
         addButton.setEnabled(true);
         String code = "";
         for(int i = 0; i < codeLength; ++i){
             code += comboBoxes[i].getSelectedItem();
         }
-        System.out.println("Code: " + code + " lastCode: " + lastCode);
         if(code.equals(lastCode)){
             addButton.setEnabled(false);
         }
