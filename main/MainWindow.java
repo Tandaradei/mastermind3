@@ -1,9 +1,11 @@
+package main;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package main;
+
 
 
 /**
@@ -15,6 +17,7 @@ import java.awt.GridLayout;
 import java.awt.event.WindowEvent;
 import java.util.Random;
 import javax.swing.BorderFactory;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
@@ -22,9 +25,8 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 public class MainWindow extends javax.swing.JFrame {
     
-    public boolean client = false;
     MainWindow me = this;
-    
+    String allColors = "0123456789abcdef";
     String originalCode = "";
     /**
      * Creates new form MyJFrame
@@ -433,8 +435,9 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_colorCountRandomCheckboxStateChanged
 
     private void hostButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_hostButtonMouseClicked
-        client = false;
-        //activatePlayingField();
+        //start server
+        
+        startPlayingField(true, allColors.substring(0, (int)colorCountSpinner.getValue()), (int)codeLengthSpinner.getValue());
     }//GEN-LAST:event_hostButtonMouseClicked
 
     private void quitGameButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_quitGameButtonMouseClicked
@@ -446,8 +449,11 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_quitGameButtonMouseClicked
 
     private void joinButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_joinButtonActionPerformed
-        client = true;
-        //activatePlayingField();
+        //get info from server
+        String colors = "0123";
+        int codeLength = 4;
+        //open playingfield
+        startPlayingField(false, colors, codeLength);
     }//GEN-LAST:event_joinButtonActionPerformed
 
     private void highscoreMenuButtonjMenuHelpClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_highscoreMenuButtonjMenuHelpClicked
@@ -455,6 +461,16 @@ public class MainWindow extends javax.swing.JFrame {
             new highscore.Highscore().setVisible(true);
         });
     }//GEN-LAST:event_highscoreMenuButtonjMenuHelpClicked
+    
+    private void startPlayingField(boolean isServer, String colors, int codeLength){
+        java.awt.EventQueue.invokeLater(() -> {
+            JFrame frame = new JFrame();
+            frame.setSize(400, 600);
+            frame.setResizable(true);
+            frame.add(new playingfield.PlayingField(isServer, colors, codeLength));
+            frame.setVisible(true);
+        });
+    }
     
     /*
     public void sendCode(String code, int codeLength, String colors){

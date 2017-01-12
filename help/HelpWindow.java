@@ -74,7 +74,7 @@ public class HelpWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuExitClicked
 
     /**
-     * @param args the command line arguments
+     * 
      */
     /*public static void main(String args[]) {
         
