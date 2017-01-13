@@ -19,7 +19,8 @@ class ItemChangeListener implements ItemListener{
     ItemChangeListener(PlayingField playingField){
         this.playingField = playingField;
     }
-    @Override
+    @SuppressWarnings("rawtypes")
+	@Override
     public void itemStateChanged(ItemEvent event) {
        if (event.getStateChange() == ItemEvent.SELECTED) {
           Object item = event.getItem();

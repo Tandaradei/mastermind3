@@ -13,6 +13,7 @@ import javax.swing.UnsupportedLookAndFeelException;
  *
  * @author laurin.agostini
  */
+@SuppressWarnings("serial")
 public class Main extends JFrame{
     
     PlayingField playingField;

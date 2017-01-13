@@ -8,8 +8,6 @@ package playingfield;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.util.HashMap;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
@@ -18,7 +16,8 @@ import javax.swing.ListCellRenderer;
  *
  * @author laurin.agostini
  */
-class ComboBoxRenderer extends JLabel implements ListCellRenderer {
+@SuppressWarnings("serial")
+class ComboBoxRenderer extends JLabel implements ListCellRenderer<Object> {
     ComboBoxRenderer() {
         setOpaque(true);
     }
@@ -44,7 +43,8 @@ class ComboBoxRenderer extends JLabel implements ListCellRenderer {
        
         
     
-    public Component getListCellRendererComponent(
+    @SuppressWarnings("rawtypes")
+	public Component getListCellRendererComponent(
                                        JList list,
                                        Object value,
                                        int index,
@@ -53,28 +53,6 @@ class ComboBoxRenderer extends JLabel implements ListCellRenderer {
         setText((String)value);
         
         setBackground(charToColor(((String)value).charAt(0)));
-
-        /*
-        if (isSelected) {
-        setBackground(list.getSelectionBackground());
-        setForeground(list.getSelectionForeground());
-        } else {
-        setBackground(list.getBackground());
-        setForeground(list.getForeground());
-        }
-        
-        //Set the icon and text.  If icon was null, say so.
-        ImageIcon icon = images[selectedIndex];
-        String pet = petStrings[selectedIndex];
-        setIcon(icon);
-        if (icon != null) {
-        setText(pet);
-        setFont(list.getFont());
-        } else {
-        setUhOhText(pet + " (no image available)",
-        list.getFont());
-        }
-        */
 
         return this;
     }
