@@ -42,6 +42,7 @@ public class PlayingField extends JPanel {
      * @param codeLength length of code to guess
      */
     public PlayingField(boolean isServer, String colors, int codeLength) {
+        this.netParticipant = netParticipant;
     	this.isServer = isServer;
         this.colors = colors;
         this.codeLength = codeLength;
@@ -49,13 +50,6 @@ public class PlayingField extends JPanel {
         initComponents();
         initActivePane();
         initHistory();
-        if(isServer){
-        	netParticipant = new Server(this, 50004, 0);
-        }
-        else {
-        	netParticipant = new Client(this, "141.18.44.38", 50004);
-        }
-        netParticipant.start();
     }
 
     /**
@@ -151,7 +145,7 @@ public class PlayingField extends JPanel {
 
             //response = client.sendCode(code);
         	lastCode = code;
-        	netParticipant.sendCommand("CHECK " + code);
+        	//netParticipant.sendCommand("CHECK " + code);
         	addToHistory(code, response);
         }
         addButton.setEnabled(false);
@@ -251,25 +245,6 @@ public class PlayingField extends JPanel {
         revalidate();
     }
     
-    public void newCommand(){
-    	System.out.println("Command received");
-    	String command = netParticipant.getCommand();
-    	String[] args = command.split(" ");
-    	if(isServer){
-    		if(args[0].equals("CHECK")){
-    			addToHistory(args[1], "");
-    		}
-    	}
-    }
-    
-    public void isConnected(){
-    	// send NEWGAME as client
-    	if(!isServer){
-    		netParticipant.sendCommand("NEWGAME Client04");
-    	}
-    	Thread netThread = new Thread(netParticipant);
-    	netThread.start();
-    }
     
     /**
      * Called if one of the combo boxes was changed

@@ -23,15 +23,20 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.plaf.synth.SynthLookAndFeel;
+import network.NetworkParticipant;
+import network.client.Client;
+import network.server.Server;
 
 import playingfield.PlayingField;
 
 public class MainWindow extends javax.swing.JFrame {
     
-    MainWindow me = this;
-    String allColors = "0123456789abcdef";
-    String originalCode = "";
-    PlayingField playingField;
+    private MainWindow me = this;
+    private String allColors = "0123456789abcdef";
+    private String originalCode = "";
+    private PlayingField playingField;
+    private static String skinXML = "skin.xml";
     /**
      * Creates new form MyJFrame
      */
@@ -53,11 +58,11 @@ public class MainWindow extends javax.swing.JFrame {
         joinPanel = new javax.swing.JPanel();
         nameLabel = new javax.swing.JLabel();
         nameTextField = new javax.swing.JTextField();
-        ipAdressTextField = new javax.swing.JTextField();
-        portTextField = new javax.swing.JTextField();
+        ipAddressTextField = new javax.swing.JTextField();
+        joinPortTextField = new javax.swing.JTextField();
         colonLabel = new javax.swing.JLabel();
-        ipAdressLabel = new javax.swing.JLabel();
-        portLabel = new javax.swing.JLabel();
+        ipAddressLabel = new javax.swing.JLabel();
+        joinPortLabel = new javax.swing.JLabel();
         autoModeCheckbox = new javax.swing.JCheckBox();
         joinButton = new javax.swing.JButton();
         newWindowJoinCheckbox = new javax.swing.JCheckBox();
@@ -69,15 +74,13 @@ public class MainWindow extends javax.swing.JFrame {
         colorCountSpinner = new javax.swing.JSpinner();
         codeLengthRandomCheckbox = new javax.swing.JCheckBox();
         colorCountRandomCheckbox = new javax.swing.JCheckBox();
-        jTextField4 = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
+        hostPortTextField = new javax.swing.JTextField();
+        hostPortLabel = new javax.swing.JLabel();
         tryCountLabel = new javax.swing.JLabel();
-        tryCountSpiner = new javax.swing.JSpinner();
+        attemptsCountSpinner = new javax.swing.JSpinner();
         seperator = new javax.swing.JSeparator();
         hostButton = new javax.swing.JToggleButton();
         newWindowHostCheckbox = new javax.swing.JCheckBox();
-        quitGameButton = new javax.swing.JButton();
-        historyPane = new javax.swing.JScrollPane();
         menuBar = new javax.swing.JMenuBar();
         exitMenuButton = new javax.swing.JMenu();
         helpMenuButton = new javax.swing.JMenu();
@@ -95,18 +98,18 @@ public class MainWindow extends javax.swing.JFrame {
         nameTextField.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         nameTextField.setText("Client04");
 
-        ipAdressTextField.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
+        ipAddressTextField.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
 
-        portTextField.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
-        portTextField.setText("50004");
+        joinPortTextField.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
+        joinPortTextField.setText("50004");
 
         colonLabel.setText(":");
 
-        ipAdressLabel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        ipAdressLabel.setText("IP-Adress");
+        ipAddressLabel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        ipAddressLabel.setText("IP-Address");
 
-        portLabel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        portLabel.setText("Port");
+        joinPortLabel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        joinPortLabel.setText("Port");
 
         autoModeCheckbox.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         autoModeCheckbox.setText("Automatic Mode");
@@ -141,14 +144,14 @@ public class MainWindow extends javax.swing.JFrame {
                             .addGroup(joinPanelLayout.createSequentialGroup()
                                 .addGroup(joinPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(joinPanelLayout.createSequentialGroup()
-                                        .addComponent(ipAdressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(ipAddressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(colonLabel))
-                                    .addComponent(ipAdressLabel))
+                                    .addComponent(ipAddressLabel))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(joinPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(portLabel)
-                                    .addComponent(portTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(joinPortLabel)
+                                    .addComponent(joinPortTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addComponent(nameTextField))
                         .addContainerGap(98, Short.MAX_VALUE))
                     .addGroup(joinPanelLayout.createSequentialGroup()
@@ -166,12 +169,12 @@ public class MainWindow extends javax.swing.JFrame {
                 .addComponent(nameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(joinPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ipAdressLabel)
-                    .addComponent(portLabel))
+                    .addComponent(ipAddressLabel)
+                    .addComponent(joinPortLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(joinPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ipAdressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(portTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ipAddressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(joinPortTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(colonLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(autoModeCheckbox)
@@ -215,21 +218,21 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
 
-        jTextField4.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
-        jTextField4.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
-        jTextField4.setText("50004");
-        jTextField4.setMinimumSize(new java.awt.Dimension(41, 22));
-        jTextField4.setPreferredSize(new java.awt.Dimension(41, 22));
+        hostPortTextField.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
+        hostPortTextField.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
+        hostPortTextField.setText("50004");
+        hostPortTextField.setMinimumSize(new java.awt.Dimension(41, 22));
+        hostPortTextField.setPreferredSize(new java.awt.Dimension(41, 22));
 
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel5.setText("Port");
+        hostPortLabel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        hostPortLabel.setText("Port");
 
         tryCountLabel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         tryCountLabel.setText("Attempts (0 = unlimited)");
 
-        tryCountSpiner.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
-        tryCountSpiner.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
-        tryCountSpiner.setPreferredSize(new java.awt.Dimension(41, 22));
+        attemptsCountSpinner.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
+        attemptsCountSpinner.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
+        attemptsCountSpinner.setPreferredSize(new java.awt.Dimension(41, 22));
 
         hostButton.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         hostButton.setText("Host");
@@ -253,7 +256,7 @@ public class MainWindow extends javax.swing.JFrame {
                 .addGroup(hostPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(newWindowHostCheckbox)
                     .addComponent(hostButton)
-                    .addComponent(jLabel5)
+                    .addComponent(hostPortLabel)
                     .addComponent(tryCountLabel)
                     .addComponent(colorCountLabel)
                     .addGroup(hostPanelLayout.createSequentialGroup()
@@ -265,8 +268,8 @@ public class MainWindow extends javax.swing.JFrame {
                         .addGroup(hostPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(colorCountRandomCheckbox)
                             .addComponent(codeLengthRandomCheckbox)))
-                    .addComponent(tryCountSpiner, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(attemptsCountSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(hostPortTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(130, Short.MAX_VALUE))
         );
         hostPanelLayout.setVerticalGroup(
@@ -287,13 +290,13 @@ public class MainWindow extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(tryCountLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tryCountSpiner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(attemptsCountSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(seperator, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(2, 2, 2)
-                .addComponent(jLabel5)
+                .addComponent(hostPortLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(hostPortTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(newWindowHostCheckbox)
                 .addGap(13, 13, 13)
@@ -305,11 +308,6 @@ public class MainWindow extends javax.swing.JFrame {
         colorCountSpinner.getAccessibleContext().setAccessibleDescription("");
 
         tabbedPane.addTab("Host", hostPanel);
-
-
-        historyPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-        historyPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-
 
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
@@ -396,18 +394,19 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_colorCountRandomCheckboxStateChanged
 
     private void hostButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_hostButtonMouseClicked
-    	startPlayingField(true, allColors.substring(0, (int)colorCountSpinner.getValue()), (int)codeLengthSpinner.getValue());
+    	System.out.println("Start as server -> port: " + hostPortTextField.getText());
+        Server server = new Server(Integer.parseInt(hostPortTextField.getText())
+                                    , (int)attemptsCountSpinner.getValue()
+                                    , (int)colorCountSpinner.getValue()
+                                    , (int)codeLengthSpinner.getValue());
         //start server
-        
+        server.start();
     }//GEN-LAST:event_hostButtonMouseClicked
 
 
     private void joinButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_joinButtonActionPerformed
-        //get info from server
-        String colors = "0123";
-        int codeLength = 4;
-        //open playingfield
-        startPlayingField(false, colors, codeLength);
+        Client client = new Client(ipAddressTextField.getText(), Integer.parseInt(joinPortTextField.getText()));
+        client.start();
     }//GEN-LAST:event_joinButtonActionPerformed
 
     private void highscoreMenuButtonjMenuHelpClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_highscoreMenuButtonjMenuHelpClicked
@@ -416,15 +415,6 @@ public class MainWindow extends javax.swing.JFrame {
         });
     }//GEN-LAST:event_highscoreMenuButtonjMenuHelpClicked
     
-    private void startPlayingField(boolean isServer, String colors, int codeLength){
-        java.awt.EventQueue.invokeLater(() -> {
-            JFrame frame = new JFrame();
-            frame.setSize(400, 600);
-            frame.setResizable(true);
-            frame.add(new playingfield.PlayingField(isServer, colors, codeLength));
-            frame.setVisible(true);
-        });
-    }
     
     /*
     public void sendCode(String code, int codeLength, String colors){
@@ -451,6 +441,29 @@ public class MainWindow extends javax.swing.JFrame {
     }
     */
     
+    /*
+    private static void initLookAndFeel() {
+        // String lookAndFeel = "com.sun.java.swing.plaf.motif.MotifLookAndFeel";
+        SynthLookAndFeel lookAndFeel = new SynthLookAndFeel();
+       
+ 
+        try {
+            lookAndFeel.load(MainWindow.class.getResourceAsStream(skinXML),
+                                              MainWindow.class);
+            UIManager.setLookAndFeel(lookAndFeel);
+        } 
+
+        catch (Exception e) {
+            System.err.println("Couldn't get specified look and feel ("
+                               + lookAndFeel
+                               + "), for some reason.");
+            System.err.println("Using the default look and feel.");
+            e.printStackTrace();
+        }
+        
+    }
+    */
+    
     /**
      * @param args the command line arguments
      */
@@ -460,6 +473,8 @@ public class MainWindow extends javax.swing.JFrame {
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
+        //initLookAndFeel();
+        
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -495,6 +510,7 @@ public class MainWindow extends javax.swing.JFrame {
         catch (IllegalAccessException e) {
            // handle exception
         }
+        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
             new MainWindow().setVisible(true);
@@ -503,6 +519,7 @@ public class MainWindow extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox aiEnabledCheckbox;
+    private javax.swing.JSpinner attemptsCountSpinner;
     private javax.swing.JCheckBox autoModeCheckbox;
     private javax.swing.JLabel codeLengthLabel;
     private javax.swing.JCheckBox codeLengthRandomCheckbox;
@@ -514,27 +531,24 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JMenu exitMenuButton;
     private javax.swing.JMenu helpMenuButton;
     private javax.swing.JMenu highscoreMenuButton;
-    private javax.swing.JScrollPane historyPane;
     private javax.swing.JToggleButton hostButton;
     private javax.swing.JPanel hostPanel;
-    private javax.swing.JLabel ipAdressLabel;
-    private javax.swing.JTextField ipAdressTextField;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JTextField jTextField4;
+    private javax.swing.JLabel hostPortLabel;
+    private javax.swing.JTextField hostPortTextField;
+    private javax.swing.JLabel ipAddressLabel;
+    private javax.swing.JTextField ipAddressTextField;
     private javax.swing.JButton joinButton;
     private javax.swing.JPanel joinPanel;
+    private javax.swing.JLabel joinPortLabel;
+    private javax.swing.JTextField joinPortTextField;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JLabel nameLabel;
     private javax.swing.JTextField nameTextField;
     private javax.swing.JCheckBox newWindowHostCheckbox;
     private javax.swing.JCheckBox newWindowJoinCheckbox;
-    private javax.swing.JLabel portLabel;
-    private javax.swing.JTextField portTextField;
-    private javax.swing.JButton quitGameButton;
     private javax.swing.JSeparator seperator;
     private javax.swing.JTabbedPane tabbedPane;
     private javax.swing.JLabel tryCountLabel;
-    private javax.swing.JSpinner tryCountSpiner;
     // End of variables declaration//GEN-END:variables
 }

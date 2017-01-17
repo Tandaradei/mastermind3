@@ -90,13 +90,6 @@
               <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                   <Component id="tabbedPane" alignment="1" max="32767" attributes="0"/>
               </Group>
-              <Group type="103" rootIndex="2" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                      <Component id="playingField" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                  </Group>
-              </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
@@ -104,13 +97,6 @@
               <EmptySpace min="0" pref="422" max="32767" attributes="0"/>
               <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                   <Component id="tabbedPane" alignment="0" max="32767" attributes="0"/>
-              </Group>
-              <Group type="103" rootIndex="2" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                      <Component id="playingField" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                  </Group>
               </Group>
           </Group>
         </DimensionLayout>
@@ -149,16 +135,16 @@
                                       <Group type="102" alignment="0" attributes="0">
                                           <Group type="103" groupAlignment="0" attributes="0">
                                               <Group type="102" alignment="0" attributes="0">
-                                                  <Component id="ipAdressTextField" min="-2" pref="114" max="-2" attributes="0"/>
+                                                  <Component id="ipAddressTextField" min="-2" pref="114" max="-2" attributes="0"/>
                                                   <EmptySpace max="-2" attributes="0"/>
                                                   <Component id="colonLabel" min="-2" max="-2" attributes="0"/>
                                               </Group>
-                                              <Component id="ipAdressLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                              <Component id="ipAddressLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                                           </Group>
                                           <EmptySpace max="-2" attributes="0"/>
                                           <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="portLabel" min="-2" max="-2" attributes="0"/>
-                                              <Component id="portTextField" min="-2" pref="69" max="-2" attributes="0"/>
+                                              <Component id="joinPortLabel" min="-2" max="-2" attributes="0"/>
+                                              <Component id="joinPortTextField" min="-2" pref="69" max="-2" attributes="0"/>
                                           </Group>
                                       </Group>
                                       <Component id="nameTextField" alignment="0" max="32767" attributes="0"/>
@@ -185,13 +171,13 @@
                           <Component id="nameTextField" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="ipAdressLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="portLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="ipAddressLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="joinPortLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="ipAdressTextField" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="portTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="ipAddressTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="joinPortTextField" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="colonLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -224,14 +210,14 @@
                     <Property name="text" type="java.lang.String" value="Client04"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="ipAdressTextField">
+                <Component class="javax.swing.JTextField" name="ipAddressTextField">
                   <Properties>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Segoe UI" size="11" style="0"/>
                     </Property>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="portTextField">
+                <Component class="javax.swing.JTextField" name="joinPortTextField">
                   <Properties>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Segoe UI" size="11" style="0"/>
@@ -244,15 +230,15 @@
                     <Property name="text" type="java.lang.String" value=":"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JLabel" name="ipAdressLabel">
+                <Component class="javax.swing.JLabel" name="ipAddressLabel">
                   <Properties>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Segoe UI" size="14" style="1"/>
                     </Property>
-                    <Property name="text" type="java.lang.String" value="IP-Adress"/>
+                    <Property name="text" type="java.lang.String" value="IP-Address"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JLabel" name="portLabel">
+                <Component class="javax.swing.JLabel" name="joinPortLabel">
                   <Properties>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Segoe UI" size="14" style="1"/>
@@ -316,7 +302,7 @@
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="newWindowHostCheckbox" min="-2" max="-2" attributes="0"/>
                               <Component id="hostButton" min="-2" max="-2" attributes="0"/>
-                              <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
+                              <Component id="hostPortLabel" min="-2" max="-2" attributes="0"/>
                               <Component id="tryCountLabel" min="-2" max="-2" attributes="0"/>
                               <Component id="colorCountLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Group type="102" alignment="0" attributes="0">
@@ -331,8 +317,8 @@
                                       <Component id="codeLengthRandomCheckbox" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
-                              <Component id="tryCountSpiner" alignment="0" min="-2" pref="80" max="-2" attributes="0"/>
-                              <Component id="jTextField4" alignment="0" min="-2" pref="67" max="-2" attributes="0"/>
+                              <Component id="attemptsCountSpinner" alignment="0" min="-2" pref="80" max="-2" attributes="0"/>
+                              <Component id="hostPortTextField" alignment="0" min="-2" pref="67" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace pref="130" max="32767" attributes="0"/>
                       </Group>
@@ -358,13 +344,13 @@
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="tryCountLabel" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="tryCountSpiner" min="-2" max="-2" attributes="0"/>
+                          <Component id="attemptsCountSpinner" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="seperator" min="-2" pref="10" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
-                          <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
+                          <Component id="hostPortLabel" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jTextField4" min="-2" max="-2" attributes="0"/>
+                          <Component id="hostPortTextField" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="newWindowHostCheckbox" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="13" max="-2" attributes="0"/>
@@ -440,7 +426,7 @@
                     <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="colorCountRandomCheckboxStateChanged"/>
                   </Events>
                 </Component>
-                <Component class="javax.swing.JTextField" name="jTextField4">
+                <Component class="javax.swing.JTextField" name="hostPortTextField">
                   <Properties>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Segoe UI" size="11" style="0"/>
@@ -455,7 +441,7 @@
                     </Property>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JLabel" name="jLabel5">
+                <Component class="javax.swing.JLabel" name="hostPortLabel">
                   <Properties>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Segoe UI" size="14" style="1"/>
@@ -471,7 +457,7 @@
                     <Property name="text" type="java.lang.String" value="Attempts (0 = unlimited)"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JSpinner" name="tryCountSpiner">
+                <Component class="javax.swing.JSpinner" name="attemptsCountSpinner">
                   <Properties>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Segoe UI" size="11" style="0"/>
@@ -507,62 +493,6 @@
                   </Properties>
                 </Component>
               </SubComponents>
-            </Container>
-          </SubComponents>
-        </Container>
-        <Container class="javax.swing.JPanel" name="playingField">
-
-          <Layout>
-            <DimensionLayout dim="0">
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace pref="276" max="32767" attributes="0"/>
-                      <Component id="quitGameButton" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="historyPane" pref="379" max="32767" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                      </Group>
-                  </Group>
-              </Group>
-            </DimensionLayout>
-            <DimensionLayout dim="1">
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace pref="371" max="32767" attributes="0"/>
-                      <Component id="quitGameButton" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="historyPane" min="-2" pref="344" max="-2" attributes="0"/>
-                          <EmptySpace min="0" pref="67" max="32767" attributes="0"/>
-                      </Group>
-                  </Group>
-              </Group>
-            </DimensionLayout>
-          </Layout>
-          <SubComponents>
-            <Component class="javax.swing.JButton" name="quitGameButton">
-              <Properties>
-                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Segoe UI" size="14" style="1"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="Quit Game"/>
-              </Properties>
-              <Events>
-                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="quitGameButtonMouseClicked"/>
-              </Events>
-            </Component>
-            <Container class="javax.swing.JScrollPane" name="historyPane">
-              <Properties>
-                <Property name="horizontalScrollBarPolicy" type="int" value="32"/>
-                <Property name="verticalScrollBarPolicy" type="int" value="22"/>
-              </Properties>
-
-              <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
             </Container>
           </SubComponents>
         </Container>

@@ -12,8 +12,7 @@ import playingfield.PlayingField;
 public class Server extends NetworkParticipant {
     
     private String sequence = "";
-    private int sequenceLength = 4;
-    private String colors = "123456789abcdef";
+    private String allColors = "0123456789abcde";
     private int port;
     private int attempts;
     private String playerName = "Client04";
@@ -22,13 +21,56 @@ public class Server extends NetworkParticipant {
     
     // Server mit Port "port" und
     // Anzahl der Rateversuche "attempts" erstellen
-    public Server(PlayingField playingField, int port, int attempts){
-    	super(playingField);
+    public Server(int port, int attempts, int colorsLength, int codeLength){
         this.port = port;
         this.attempts = attempts;
+        this.colors = allColors.substring(0, colorsLength);
+        this.codeLength = codeLength;
     }
     
+    public void start () {
+        NetworkParticipant me = this;
+        Runnable runner = new Runnable() {
+            public void run(){
+                try {
+                    startPlayingField(true);
+                    String hostname = getMyAddress();
+                    ServerSocket serverSocket = new ServerSocket(port);
+                    System.out.println("Auf Client an "+hostname+":"+port+" warten ...");
+                    Socket clientSocket = serverSocket.accept();
+                    System.out.println("Server: Verbindung hergestellt!");
 
+                    in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+
+                    // Ausgabestrom
+                    out = new OutputStreamWriter(clientSocket.getOutputStream());
+
+                    //startPlayingField(true);
+                    
+                    Thread netThread = new Thread(me);
+                    netThread.start();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    System.err.println("Accept failed.");
+                }
+            }
+        };
+        
+        Thread serverThread = new Thread(runner);
+        serverThread.start();
+        
+    }
+    
+    
+    
+    protected void executeCommand(String command){
+        String[] args = command.split(" ");
+        if(args[0].equals("NEWGAME")){
+            playerName = args[1];
+            sendCommand("SETUP " + colors + " " + codeLength);
+        }
+    }
 
 
     public static String getMyAddress() {
@@ -43,6 +85,7 @@ public class Server extends NetworkParticipant {
 
 
     // Automatische Wahl des Codeworts
+    /*
     public void generateRandomSequence(String argument) {
         sequence = "";
 
@@ -54,9 +97,10 @@ public class Server extends NetworkParticipant {
         }
         newgame(argument);
     }
-
+    */
 
     // Manuelle Wahl des Codeworts
+    /*
     public void generateSequence(int sequenceLength, String colors, String argument) {
         this.sequenceLength = sequenceLength;
 
@@ -65,14 +109,7 @@ public class Server extends NetworkParticipant {
         }
         newgame(argument);
     }
-
-
-    // Neues Spiel starten
-    public String newgame(String argument) {
-        playerName = argument;
-
-        return "SETUP " + sequenceLength + " " + sequence;
-    }
+    */
 
     // Das eingegebene Codewort überprüfen
     public static String checkKey(String original, String toTest){
@@ -107,33 +144,7 @@ public class Server extends NetworkParticipant {
     }
     
     
-    public void start () {
-        Runnable runner = new Runnable() {
-        	public void run(){
-        		try {
-                	String hostname = getMyAddress();
-                	ServerSocket serverSocket = new ServerSocket(port);
-                    System.out.println("Auf Client an "+hostname+":"+port+" warten ...");
-                    Socket clientSocket = serverSocket.accept();
-                    System.out.println("Verbindung hergestellt!");
-                    
-                    in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-
-                    // Ausgabestrom
-                    out = new OutputStreamWriter(clientSocket.getOutputStream());
-                    
-                    playingField.isConnected();
-                    
-                } catch (IOException e) {
-                    System.err.println("Accept failed.");
-                }
-        	}
-        };
-        
-        Thread serverThread = new Thread(runner);
-        serverThread.start();
-        
-    }
+    
     
     public void stop(){
     	try {
