@@ -32,9 +32,9 @@ class ComboBoxRenderer extends JLabel implements ListCellRenderer<Object> {
     
     static private int charToIndex(char input){
         if(input < 'a'){
-            return (int)(input - '0');
+            return (int)(input - '1');
         }
-        return (int)(input - 'a') + 10;
+        return (int)(input - 'a') + 9;
     }
     
     static public Color charToColor(char input){

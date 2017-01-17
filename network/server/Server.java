@@ -11,12 +11,12 @@ import playingfield.PlayingField;
 
 public class Server extends NetworkParticipant {
     
-    private String sequence = "";
-    private String allColors = "0123456789abcde";
+    private String allColors = "123456789abcdef";
     private int port;
     private int attempts;
     private String playerName = "Client04";
-    ServerSocket serverSocket;
+    private ServerSocket serverSocket;
+    private String key = "";
     
     
     // Server mit Port "port" und
@@ -26,6 +26,9 @@ public class Server extends NetworkParticipant {
         this.attempts = attempts;
         this.colors = allColors.substring(0, colorsLength);
         this.codeLength = codeLength;
+        for(int i = 0; i < codeLength; ++i){
+        	key += colors.charAt(0);
+        }
     }
     
     public void start () {
@@ -35,20 +38,26 @@ public class Server extends NetworkParticipant {
                 try {
                     startPlayingField(true);
                     String hostname = getMyAddress();
-                    ServerSocket serverSocket = new ServerSocket(port);
+                    serverSocket = new ServerSocket(port);
                     System.out.println("Auf Client an "+hostname+":"+port+" warten ...");
-                    Socket clientSocket = serverSocket.accept();
-                    System.out.println("Server: Verbindung hergestellt!");
+                    try{
+                    	Socket clientSocket = serverSocket.accept();
+                    	System.out.println("Server: Verbindung hergestellt!");
 
-                    in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                        in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
-                    // Ausgabestrom
-                    out = new OutputStreamWriter(clientSocket.getOutputStream());
+                        // Ausgabestrom
+                        out = new OutputStreamWriter(clientSocket.getOutputStream());
 
-                    //startPlayingField(true);
+                        //startPlayingField(true);
+                        
+                        meThread = new Thread(me);
+                        meThread.start();
+                    }
+                    catch (SocketException e){
+                    	System.err.println("Socket was closed before a client has connected");
+                    }
                     
-                    Thread netThread = new Thread(me);
-                    netThread.start();
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -68,10 +77,57 @@ public class Server extends NetworkParticipant {
         String[] args = command.split(" ");
         if(args[0].equals("NEWGAME")){
             playerName = args[1];
-            sendCommand("SETUP " + colors + " " + codeLength);
+            sendCommand("SETUP " + codeLength + " " + colors);
+            sendCommand("GUESS");
+        }
+        if(args[0].equals("CHECK")){
+            String code = args[1];
+            String result = checkKey(code, key);
+            playingField.addToHistory(code, result);
+            sendCommand("RESULT " + result);
         }
     }
+    
+    public void sendCode(String code){
+    	key = code;
+    }
 
+    public void stop(boolean initiated){
+    	stopped = true;
+    	if(initiated){
+    		sendCommand("");
+    	}
+    	
+    	try{
+    		closeIO();
+    		meThread.join();
+    	}
+    	catch(InterruptedException e){
+    		e.printStackTrace();
+    	}
+    	
+    	System.out.println("Server: stop called!");
+    	
+    	
+    	try {
+    		System.out.println("Server: Stopping connection!");
+    		if(serverSocket != null){
+    			serverSocket.close();
+    			System.out.println("Server: ServerSocket closed!");
+    		}
+    		if(clientSocket != null && !clientSocket.isClosed()){
+				clientSocket.shutdownOutput();
+    			clientSocket.close();
+    		}
+    		System.out.println("Server: Connection stopped!");
+	    } catch (IOException e) {
+	        System.err.println("Server: Shutdown failed.");
+	        e.printStackTrace();
+	    }
+    	if(!initiated){
+    		start();
+    	}
+    }
 
     public static String getMyAddress() {
         String address = "";
@@ -112,7 +168,7 @@ public class Server extends NetworkParticipant {
     */
 
     // Das eingegebene Codewort überprüfen
-    public static String checkKey(String original, String toTest){
+    private String checkKey(String original, String toTest){
         String result = "";
         for(int i = 0; i < original.length(); i++){
             if(original.charAt(i) == toTest.charAt(i)){
@@ -146,15 +202,7 @@ public class Server extends NetworkParticipant {
     
     
     
-    public void stop(){
-    	try {
-	    	clientSocket.shutdownOutput();
-	        serverSocket.close();
-	        System.out.println("Verbindung beendet!");
-	    } catch (IOException e) {
-	        System.err.println("Accept failed.");
-	    }
-    }
+    
     
 }
 // vim: ts=4 sta sw=4 et ai

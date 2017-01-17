@@ -12,6 +12,7 @@ public class Client extends NetworkParticipant {
 
     private String address = "127.0.0.1";
     private int port = 50004;
+    private String code = "";
 
     public Client(String address, int port){
 
@@ -38,8 +39,8 @@ public class Client extends NetworkParticipant {
 
                         //startPlayingField(false);
                         sendCommand("NEWGAME Client04");
-                        Thread netThread = new Thread(me);
-                        netThread.start();
+                        meThread = new Thread(me);
+                        meThread.start();
                     } else {
                         System.out.println("Verbindung konnte nicht hergestellt werden!");
                     }
@@ -54,13 +55,56 @@ public class Client extends NetworkParticipant {
         clientThread.start();
 
     }
+    
+    public void stop(boolean initiated){
+    	stopped = true;
+    	if(initiated){
+    		sendCommand("");
+    	}
+    	else{
+    		closeWindow();
+    	}
+    	try{
+    		closeIO();
+    		meThread.join();
+    	}
+    	catch(InterruptedException e){
+    		e.printStackTrace();
+    	}
+    	System.out.println("Client: stop called!");
+    	
+    	
+    	try {
+    		System.out.println("Client: Stopping connection!");
+    		if(clientSocket != null && !clientSocket.isClosed()){
+				clientSocket.shutdownOutput();
+				clientSocket.close();
+    		}
+	        System.out.println("Client: Connection stopped!");
+	    } catch (IOException e) {
+	        System.err.println("Client: Shutdown failed.");
+	        e.printStackTrace();
+	    }
+    }
 
+    public void sendCode(String code){
+    	this.code = code;
+    	sendCommand("CHECK " + code);
+    }
+    
     protected void executeCommand(String command){
-        String[] args = command.split(" ");
+        final String[] args = command.split(" ");
         if(args[0].equals("SETUP")){
-            colors = args[1];
-            codeLength = Integer.parseInt(args[2]);
+        	codeLength = Integer.parseInt(args[1]);
+            colors = args[2];
             startPlayingField(false);
+        }
+        if(args[0].equals("GUESS")){
+        	playingField.activateSendButton();
+        }
+        if(args[0].equals("RESULT")){
+            String result = args[1];
+            playingField.addToHistory(code, result);
         }
     }
     

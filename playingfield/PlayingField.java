@@ -42,7 +42,6 @@ public class PlayingField extends JPanel {
      * @param codeLength length of code to guess
      */
     public PlayingField(boolean isServer, String colors, int codeLength) {
-        this.netParticipant = netParticipant;
     	this.isServer = isServer;
         this.colors = colors;
         this.codeLength = codeLength;
@@ -50,6 +49,11 @@ public class PlayingField extends JPanel {
         initComponents();
         initActivePane();
         initHistory();
+        addButton.setBackground(Color.WHITE);
+    }
+    
+    public void setNetParticipant(NetworkParticipant netParticipant){
+    	this.netParticipant = netParticipant;
     }
 
     /**
@@ -128,27 +132,21 @@ public class PlayingField extends JPanel {
      */
     //TODO rename to sendButton
     private void addButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addButtonMouseClicked
-        String code = "";
+    	String code = "";
+        
         for(int i = 0; i < codeLength; ++i){
             code += comboBoxes[i].getSelectedItem();
         }
+        lastCode = code;
         
+        netParticipant.sendCode(code);
         if(isServer){
         	for(int i = 0; i < codeLength; ++i){
-                comboBoxes[i].setEnabled(false);;
+                comboBoxes[i].setEnabled(false);
             }
-        	//server.setCode(code);
-        	//server.startGame();
+        	addButton.setVisible(false);
         }
-        else {
-        	String response = "";
-
-            //response = client.sendCode(code);
-        	lastCode = code;
-        	//netParticipant.sendCommand("CHECK " + code);
-        	addToHistory(code, response);
-        }
-        addButton.setEnabled(false);
+        addButton.setBackground(Color.RED);
     }//GEN-LAST:event_addButtonMouseClicked
 
     /**
@@ -199,7 +197,7 @@ public class PlayingField extends JPanel {
      * @param code 
      * @param response
      */
-    private void addToHistory(String code, String response){
+    public void addToHistory(String code, String response){
         historyCount++;
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridwidth = GridBagConstraints.REMAINDER;
@@ -207,6 +205,12 @@ public class PlayingField extends JPanel {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         history.add(getListEntryRendered(code, response, historyCount), gbc, 0);
         revalidate();
+    }
+    
+    public void activateSendButton(){
+    	if(!isServer){
+    		addButton.setEnabled(true);
+    	}
     }
     
     /**
@@ -250,13 +254,13 @@ public class PlayingField extends JPanel {
      * Called if one of the combo boxes was changed
      */
     public void codeChanged(){
-        addButton.setEnabled(true);
+        addButton.setBackground(Color.WHITE);
         String code = "";
         for(int i = 0; i < codeLength; ++i){
             code += comboBoxes[i].getSelectedItem();
         }
         if(code.equals(lastCode)){
-            addButton.setEnabled(false);
+            addButton.setBackground(Color.RED);
         }
     }
 
