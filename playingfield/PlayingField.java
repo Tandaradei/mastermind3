@@ -13,6 +13,11 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import javax.swing.JScrollPane;
 
 import network.NetworkParticipant;
@@ -174,11 +179,39 @@ public class PlayingField extends JPanel {
      * @return
      */
     private JPanel getListEntryRendered(String code, String response, int index){
-        JPanel entry = new JPanel();
+        JPanel entry = new JPanel(){
+				@Override
+				protected void paintComponent(Graphics grphcs) {
+					super.paintComponent(grphcs);
+					Graphics2D g2d = (Graphics2D) grphcs;
+					g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+							RenderingHints.VALUE_ANTIALIAS_ON);
+					GradientPaint gp = new GradientPaint(0, 0,
+							getBackground().brighter().brighter(), 0, getHeight(),
+							getBackground().darker().darker());
+					g2d.setPaint(gp);
+					g2d.fillRect(0, 0, getWidth(), getHeight()); 
+
+				}
+			};
         entry.add(new JLabel(((Integer)(index)).toString()));
         
         for(int i = 0; i < code.length(); ++i){
-            JButton button = new JButton(code.substring(i, i+1));
+            JButton button = new JButton(code.substring(i, i+1)){
+				@Override
+				protected void paintComponent(Graphics grphcs) {
+					super.paintComponent(grphcs);
+					Graphics2D g2d = (Graphics2D) grphcs;
+					g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+							RenderingHints.VALUE_ANTIALIAS_ON);
+					GradientPaint gp = new GradientPaint(0, 0,
+							getBackground().brighter().brighter(), 0, getHeight(),
+							getBackground().darker().darker());
+					g2d.setPaint(gp);
+					g2d.fillRect(0, 0, getWidth(), getHeight()); 
+
+				}
+			};
             button.setBackground(ComboBoxRenderer.charToColor(code.charAt(i)));
             button.setEnabled(false);
             button.setSize(20, 20);
@@ -186,7 +219,21 @@ public class PlayingField extends JPanel {
             entry.add(button);
         }
         for(int i = 0; i < response.length(); ++i){
-            JButton button = new JButton(response.substring(i, i+1));
+            JButton button = new JButton(response.substring(i, i+1)){
+				@Override
+				protected void paintComponent(Graphics grphcs) {
+					super.paintComponent(grphcs);
+					Graphics2D g2d = (Graphics2D) grphcs;
+					g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+							RenderingHints.VALUE_ANTIALIAS_ON);
+					GradientPaint gp = new GradientPaint(0, 0,
+							getBackground().brighter(), 0, getHeight(),
+							getBackground().darker());
+					g2d.setPaint(gp);
+					g2d.fillRect(0, 0, getWidth(), getHeight()); 
+
+				}
+			};
             button.setBackground(charToColorResponse(response.charAt(i)));
             button.setEnabled(false);
             button.setSize(20, 20);
@@ -245,7 +292,21 @@ public class PlayingField extends JPanel {
 	private void initActivePane(){
         String[] array = colors.split("(?!^)");
         for(int i = 0; i < codeLength; ++i){
-            JComboBox comboBox = new JComboBox(array);
+            JComboBox comboBox = new JComboBox(array){
+				@Override
+				protected void paintComponent(Graphics grphcs) {
+					super.paintComponent(grphcs);
+					Graphics2D g2d = (Graphics2D) grphcs;
+					g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+							RenderingHints.VALUE_ANTIALIAS_ON);
+					GradientPaint gp = new GradientPaint(0, 0,
+							getBackground().brighter(), 0, getHeight(),
+							getBackground().darker());
+					g2d.setPaint(gp);
+					g2d.fillRect(0, 0, getWidth(), getHeight()); 
+
+				}
+			};
             comboBox.setBackground(ComboBoxRenderer.charToColor(colors.charAt(0)));
             comboBox.setSize(40, 40);
             comboBox.setLocation(i*50, 0);

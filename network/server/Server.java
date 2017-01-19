@@ -83,7 +83,7 @@ public class Server extends NetworkParticipant {
             sendCommand("GUESS");
 			playingField.setStatusText("Game set up, " + playerName + " is guessing now " + (maxAttempts > 0 ? "(attempt " + attempts + " of " + maxAttempts + ")" : ""));
         }
-        if(args[0].equals("CHECK")){
+        else if(args[0].equals("CHECK")){
 			attempts++;
             String code = args[1];
             String result = checkKey(code, key);
@@ -99,6 +99,9 @@ public class Server extends NetworkParticipant {
 				playingField.setStatusText(playerName + " has lost the game with " + attempts + " of  " + maxAttempts + " attempts");
 			}
         }
+		else{
+			System.err.println("Unknow command received!");
+		}
     }
     
     public void sendCode(String code){

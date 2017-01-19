@@ -101,14 +101,14 @@ public class Client extends NetworkParticipant {
             colors = args[2];
             startPlayingField(false, "Start to guess (click on 'Help' in the MainWindow if you need)");
         }
-        if(args[0].equals("GUESS")){
+        else if(args[0].equals("GUESS")){
         	playingField.activateSendButton();
         }
-        if(args[0].equals("RESULT")){
+        else if(args[0].equals("RESULT")){
             String result = args[1];
             playingField.addToHistory(code, result);
         }
-		if(args[0].equals("GAMEOVER")){
+		else if(args[0].equals("GAMEOVER")){
             String result = args[1];
             if(result.equals("WIN")){
 				playingField.setStatusText("Congratulations! You have won the game!");
@@ -121,6 +121,9 @@ public class Client extends NetworkParticipant {
 			}
 			
         }
+		else{
+			System.err.println("Unknow command received!");
+		}
     }
     
 }
