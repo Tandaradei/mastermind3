@@ -116,7 +116,9 @@ public class Server extends NetworkParticipant {
     	
     	try{
     		closeIO();
-    		meThread.join();
+			if(meThread != null){
+				meThread.join();
+			}
     	}
     	catch(InterruptedException e){
     		e.printStackTrace();

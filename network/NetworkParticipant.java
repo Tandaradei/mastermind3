@@ -10,6 +10,11 @@ import javax.swing.JFrame;
 import playingfield.PlayingField;
 import playingfield.PlayingFieldListener;
 
+/**
+* Base class for Server and Client
+*
+*/
+
 public abstract class NetworkParticipant implements Runnable {
     protected BufferedReader in;
     protected Writer out;
