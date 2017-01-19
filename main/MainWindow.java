@@ -405,7 +405,7 @@ public class MainWindow extends javax.swing.JFrame {
 
 
     private void joinButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_joinButtonActionPerformed
-        Client client = new Client(ipAddressTextField.getText(), Integer.parseInt(joinPortTextField.getText()));
+        Client client = new Client(ipAddressTextField.getText(), Integer.parseInt(joinPortTextField.getText()), nameTextField.getText());
         client.start();
     }//GEN-LAST:event_joinButtonActionPerformed
 
@@ -416,53 +416,7 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_highscoreMenuButtonjMenuHelpClicked
     
     
-    /*
-    public void sendCode(String code, int codeLength, String colors){
-        //System.out.println(code);
-        if(client){
-            String response = ServerController.checkKey(originalCode, code);
-            addCodeToHistory(code, response);
-            if(response.length() < codeLength || response.contains("W")){
-                java.awt.EventQueue.invokeLater(() -> {
-                    new CodeChooserWindow(me, codeLength, colors, code).setVisible(true);
-                });
-            }
-        }
-        
-    }
-    */
-    /*
-    private String generateCode(int codeLength, String colors){
-        String code = "";
-        for(int i = 0; i < codeLength; ++i){
-            code += colors.charAt(new Random().nextInt(colors.length()));
-        }
-        return code;
-    }
-    */
     
-    /*
-    private static void initLookAndFeel() {
-        // String lookAndFeel = "com.sun.java.swing.plaf.motif.MotifLookAndFeel";
-        SynthLookAndFeel lookAndFeel = new SynthLookAndFeel();
-       
- 
-        try {
-            lookAndFeel.load(MainWindow.class.getResourceAsStream(skinXML),
-                                              MainWindow.class);
-            UIManager.setLookAndFeel(lookAndFeel);
-        } 
-
-        catch (Exception e) {
-            System.err.println("Couldn't get specified look and feel ("
-                               + lookAndFeel
-                               + "), for some reason.");
-            System.err.println("Using the default look and feel.");
-            e.printStackTrace();
-        }
-        
-    }
-    */
     
     /**
      * @param args the command line arguments

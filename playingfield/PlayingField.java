@@ -63,7 +63,8 @@ public class PlayingField extends JPanel {
      */
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-
+	
+		statusLabel = new javax.swing.JLabel("Initiated");
         activePane = new javax.swing.JPanel();
         addButton = new javax.swing.JButton();
         historyPane = new javax.swing.JPanel();
@@ -113,12 +114,15 @@ public class PlayingField extends JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+			.addComponent(statusLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
             .addComponent(activePane, javax.swing.GroupLayout.DEFAULT_SIZE, 435, Short.MAX_VALUE)
             .addComponent(historyPane, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+				.addGap(10, 10, 10)
+                .addComponent(statusLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(10, 10, 10)
                 .addComponent(activePane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(3, 3, 3)
@@ -212,6 +216,10 @@ public class PlayingField extends JPanel {
     		addButton.setEnabled(true);
     	}
     }
+	
+	public void setStatusText(String text){
+		statusLabel.setText(text);
+	}
     
     /**
      * Initializes the history
@@ -265,6 +273,7 @@ public class PlayingField extends JPanel {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+	private javax.swing.JLabel statusLabel;
     private javax.swing.JPanel activePane;
     private javax.swing.JButton addButton;
     private javax.swing.JPanel historyPane;

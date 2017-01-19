@@ -13,7 +13,8 @@ public class Server extends NetworkParticipant {
     
     private String allColors = "123456789abcdef";
     private int port;
-    private int attempts;
+    private int attempts = 1;
+	private int maxAttempts;
     private String playerName = "Client04";
     private ServerSocket serverSocket;
     private String key = "";
@@ -21,9 +22,9 @@ public class Server extends NetworkParticipant {
     
     // Server mit Port "port" und
     // Anzahl der Rateversuche "attempts" erstellen
-    public Server(int port, int attempts, int colorsLength, int codeLength){
+    public Server(int port, int maxAttempts, int colorsLength, int codeLength){
         this.port = port;
-        this.attempts = attempts;
+        this.maxAttempts = maxAttempts;
         this.colors = allColors.substring(0, colorsLength);
         this.codeLength = codeLength;
         for(int i = 0; i < codeLength; ++i){
@@ -36,14 +37,14 @@ public class Server extends NetworkParticipant {
         Runnable runner = new Runnable() {
             public void run(){
                 try {
-                    startPlayingField(true);
                     String hostname = getMyAddress();
+					startPlayingField(true, "Auf Client an "+hostname+":"+port+" warten ...");
+					System.out.println("Auf Client an "+hostname+":"+port+" warten ...");
                     serverSocket = new ServerSocket(port);
-                    System.out.println("Auf Client an "+hostname+":"+port+" warten ...");
                     try{
                     	Socket clientSocket = serverSocket.accept();
-                    	System.out.println("Server: Verbindung hergestellt!");
-
+                    	System.out.println("Server: Connected!");
+						playingField.setStatusText("Client connected");
                         in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
                         // Ausgabestrom
@@ -76,15 +77,27 @@ public class Server extends NetworkParticipant {
     protected void executeCommand(String command){
         String[] args = command.split(" ");
         if(args[0].equals("NEWGAME")){
+			attempts = 1;
             playerName = args[1];
             sendCommand("SETUP " + codeLength + " " + colors);
             sendCommand("GUESS");
+			playingField.setStatusText("Game set up, " + playerName + " is guessing now " + (maxAttempts > 0 ? "(attempt " + attempts + " of " + maxAttempts + ")" : ""));
         }
         if(args[0].equals("CHECK")){
+			attempts++;
             String code = args[1];
             String result = checkKey(code, key);
             playingField.addToHistory(code, result);
             sendCommand("RESULT " + result);
+			playingField.setStatusText(playerName + " has guessed " + (maxAttempts > 0 ? "(attempt " + attempts + " of " + maxAttempts + ")" : ""));
+			if(result.length() == codeLength && !result.contains("W")){
+				sendCommand("GAMEOVER WIN");
+				playingField.setStatusText(playerName + " has won the game with " + attempts + (maxAttempts > 0 ? "of  " + maxAttempts : "") + " attempts");
+			}
+			else if(maxAttempts > 0 && attempts > maxAttempts){
+				sendCommand("GAMEOVER LOSE");
+				playingField.setStatusText(playerName + " has lost the game with " + attempts + " of  " + maxAttempts + " attempts");
+			}
         }
     }
     
@@ -129,7 +142,7 @@ public class Server extends NetworkParticipant {
     	}
     }
 
-    public static String getMyAddress() {
+    private String getMyAddress() {
         String address = "";
         try(final DatagramSocket socket = new DatagramSocket()){
                 socket.connect(InetAddress.getByName("8.8.8.8"), 10002);
@@ -139,33 +152,6 @@ public class Server extends NetworkParticipant {
         return address;
     }
 
-
-    // Automatische Wahl des Codeworts
-    /*
-    public void generateRandomSequence(String argument) {
-        sequence = "";
-
-        Random rand = new Random();
-        sequenceLength = rand.nextInt((15 - 2) + 1) + 2;
-
-        for (int i = 0; i < sequenceLength; i++) {
-            sequence += colors.charAt((int) (Math.random() * 15));
-        }
-        newgame(argument);
-    }
-    */
-
-    // Manuelle Wahl des Codeworts
-    /*
-    public void generateSequence(int sequenceLength, String colors, String argument) {
-        this.sequenceLength = sequenceLength;
-
-        for (int i = 0; i < sequenceLength; i++) {
-            sequence += colors.charAt((int) (Math.random() * colors.length()));
-        }
-        newgame(argument);
-    }
-    */
 
     // Das eingegebene Codewort überprüfen
     private String checkKey(String original, String toTest){

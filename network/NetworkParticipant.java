@@ -29,8 +29,9 @@ public abstract class NetworkParticipant implements Runnable {
     	commands = new LinkedList<String>();
     }
 
-    protected void startPlayingField(boolean isServer){
+    protected void startPlayingField(boolean isServer, String text){
         playingField = new PlayingField(isServer, colors, codeLength);
+		playingField.setStatusText(text);
         playingField.setNetParticipant(this);
         java.awt.EventQueue.invokeLater(() -> {
         	playingFieldFrame = new JFrame();
