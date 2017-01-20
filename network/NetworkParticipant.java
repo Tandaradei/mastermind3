@@ -26,6 +26,7 @@ public abstract class NetworkParticipant implements Runnable {
 
     protected String colors;
     protected int codeLength;
+	protected GAMESTATE gameState = GAMESTATE.NOTSTARTED;
     
     protected Queue<String> commands;
     protected Thread commandThread;
@@ -51,6 +52,7 @@ public abstract class NetworkParticipant implements Runnable {
     }
 
     public abstract void start();
+
 
 
     protected void sendCommand(String command) {

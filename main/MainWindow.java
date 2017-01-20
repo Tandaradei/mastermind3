@@ -36,7 +36,6 @@ public class MainWindow extends javax.swing.JFrame {
     private String allColors = "0123456789abcdef";
     private String originalCode = "";
     private PlayingField playingField;
-    private static String skinXML = "skin.xml";
     /**
      * Creates new form MyJFrame
      */
@@ -65,7 +64,6 @@ public class MainWindow extends javax.swing.JFrame {
         joinPortLabel = new javax.swing.JLabel();
         autoModeCheckbox = new javax.swing.JCheckBox();
         joinButton = new javax.swing.JButton();
-        newWindowJoinCheckbox = new javax.swing.JCheckBox();
         aiEnabledCheckbox = new javax.swing.JCheckBox();
         hostPanel = new javax.swing.JPanel();
         codeLengthLabel = new javax.swing.JLabel();
@@ -80,7 +78,6 @@ public class MainWindow extends javax.swing.JFrame {
         attemptsCountSpinner = new javax.swing.JSpinner();
         seperator = new javax.swing.JSeparator();
         hostButton = new javax.swing.JToggleButton();
-        newWindowHostCheckbox = new javax.swing.JCheckBox();
         menuBar = new javax.swing.JMenuBar();
         exitMenuButton = new javax.swing.JMenu();
         helpMenuButton = new javax.swing.JMenu();
@@ -122,9 +119,6 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
 
-        newWindowJoinCheckbox.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        newWindowJoinCheckbox.setText("Open in new window");
-        newWindowJoinCheckbox.setEnabled(false);
 
         aiEnabledCheckbox.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         aiEnabledCheckbox.setText("AI - Mode");
@@ -156,8 +150,7 @@ public class MainWindow extends javax.swing.JFrame {
                         .addContainerGap(98, Short.MAX_VALUE))
                     .addGroup(joinPanelLayout.createSequentialGroup()
                         .addGroup(joinPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(aiEnabledCheckbox)
-                            .addComponent(newWindowJoinCheckbox))
+                            .addComponent(aiEnabledCheckbox))
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
         joinPanelLayout.setVerticalGroup(
@@ -178,8 +171,6 @@ public class MainWindow extends javax.swing.JFrame {
                     .addComponent(colonLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(autoModeCheckbox)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(newWindowJoinCheckbox)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(aiEnabledCheckbox)
                 .addGap(26, 26, 26)
@@ -242,9 +233,6 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
 
-        newWindowHostCheckbox.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        newWindowHostCheckbox.setText("Open in new window");
-        newWindowHostCheckbox.setEnabled(false);
 
         javax.swing.GroupLayout hostPanelLayout = new javax.swing.GroupLayout(hostPanel);
         hostPanel.setLayout(hostPanelLayout);
@@ -254,7 +242,6 @@ public class MainWindow extends javax.swing.JFrame {
             .addGroup(hostPanelLayout.createSequentialGroup()
                 .addGap(32, 32, 32)
                 .addGroup(hostPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(newWindowHostCheckbox)
                     .addComponent(hostButton)
                     .addComponent(hostPortLabel)
                     .addComponent(tryCountLabel)
@@ -297,8 +284,6 @@ public class MainWindow extends javax.swing.JFrame {
                 .addComponent(hostPortLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(hostPortTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(newWindowHostCheckbox)
                 .addGap(13, 13, 13)
                 .addComponent(hostButton)
                 .addContainerGap(80, Short.MAX_VALUE))
@@ -394,7 +379,6 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_colorCountRandomCheckboxStateChanged
 
     private void hostButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_hostButtonMouseClicked
-    	System.out.println("Start as server -> port: " + hostPortTextField.getText());
         Server server = new Server(Integer.parseInt(hostPortTextField.getText())
                                     , (int)attemptsCountSpinner.getValue()
                                     , (int)colorCountSpinner.getValue()
@@ -499,8 +483,6 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JLabel nameLabel;
     private javax.swing.JTextField nameTextField;
-    private javax.swing.JCheckBox newWindowHostCheckbox;
-    private javax.swing.JCheckBox newWindowJoinCheckbox;
     private javax.swing.JSeparator seperator;
     private javax.swing.JTabbedPane tabbedPane;
     private javax.swing.JLabel tryCountLabel;

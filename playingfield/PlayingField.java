@@ -5,6 +5,8 @@
  */
 package playingfield;
 
+import java.util.Random;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
@@ -13,16 +15,11 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
-import java.awt.GradientPaint;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
+
 import javax.swing.JScrollPane;
 
-import network.NetworkParticipant;
-import network.client.Client;
-import network.server.Server;
+import network.*;
+import customUI.*;
 
 /**
  *
@@ -55,6 +52,11 @@ public class PlayingField extends JPanel {
         initActivePane();
         initHistory();
         addButton.setBackground(Color.WHITE);
+		if(isServer){
+			randomButton.setVisible(true);
+			addButton.setText("Set as Code");
+		}
+		
     }
     
     public void setNetParticipant(NetworkParticipant netParticipant){
@@ -72,35 +74,51 @@ public class PlayingField extends JPanel {
 		statusLabel = new javax.swing.JLabel("Initiated");
         activePane = new javax.swing.JPanel();
         addButton = new javax.swing.JButton();
+		randomButton = new javax.swing.JButton();
         historyPane = new javax.swing.JPanel();
 
         activePane.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         activePane.setPreferredSize(new java.awt.Dimension(426, 67));
-
-        addButton.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+		
+		randomButton.setVisible(false);
+		randomButton.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        randomButton.setText("Randomize");
+        randomButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                randomButtonMouseClicked(evt);
+            }
+        });
+		
+        randomButton.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         addButton.setText("Send");
         addButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 addButtonMouseClicked(evt);
             }
         });
-
+		
+		activePane.add(randomButton);
+		activePane.add(addButton);
+		/*
         javax.swing.GroupLayout activePaneLayout = new javax.swing.GroupLayout(activePane);
         activePane.setLayout(activePaneLayout);
         activePaneLayout.setHorizontalGroup(
             activePaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, activePaneLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                //.addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(addButton)
-                .addGap(18, 18, 18))
+				.addComponent(randomButton))
+                //.addGap(18, 18, 18))
         );
         activePaneLayout.setVerticalGroup(
             activePaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, activePaneLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                //.addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(addButton)
-                .addGap(457, 457, 457))
+				.addComponent(randomButton))
+                //.addGap(457, 457, 457))
         );
+		*/
 
         historyPane.setBackground(new java.awt.Color(204, 204, 204));
 
@@ -120,7 +138,7 @@ public class PlayingField extends JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 			.addComponent(statusLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
-            .addComponent(activePane, javax.swing.GroupLayout.DEFAULT_SIZE, 435, Short.MAX_VALUE)
+            .addComponent(activePane/*, javax.swing.GroupLayout.DEFAULT_SIZE, 435, Short.MAX_VALUE*/)
             .addComponent(historyPane, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
@@ -129,17 +147,27 @@ public class PlayingField extends JPanel {
 				.addGap(10, 10, 10)
                 .addComponent(statusLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(10, 10, 10)
-                .addComponent(activePane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(activePane/*, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE*/)
                 .addGap(3, 3, 3)
                 .addComponent(historyPane, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+	
+	private void randomButtonMouseClicked(java.awt.event.MouseEvent evt) {
+		String[] array = colors.split("(?!^)");
+		Random rand = new Random();
+		for(int i = 0; i < codeLength; ++i){
+			String randomItem = array[rand.nextInt(array.length)];
+			comboBoxes[i].setSelectedItem(randomItem);
+		}
+	}
+	
+	
     /**
      * Performs action when ?addButton? was clicked
      * @param evt
      */
-    //TODO rename to sendButton
     private void addButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addButtonMouseClicked
     	String code = "";
         
@@ -154,6 +182,7 @@ public class PlayingField extends JPanel {
                 comboBoxes[i].setEnabled(false);
             }
         	addButton.setVisible(false);
+			randomButton.setVisible(false);
         }
         addButton.setBackground(Color.RED);
     }//GEN-LAST:event_addButtonMouseClicked
@@ -179,67 +208,66 @@ public class PlayingField extends JPanel {
      * @return
      */
     private JPanel getListEntryRendered(String code, String response, int index){
-        JPanel entry = new JPanel(){
-				@Override
-				protected void paintComponent(Graphics grphcs) {
-					super.paintComponent(grphcs);
-					Graphics2D g2d = (Graphics2D) grphcs;
-					g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-							RenderingHints.VALUE_ANTIALIAS_ON);
-					GradientPaint gp = new GradientPaint(0, 0,
-							getBackground().brighter().brighter(), 0, getHeight(),
-							getBackground().darker().darker());
-					g2d.setPaint(gp);
-					g2d.fillRect(0, 0, getWidth(), getHeight()); 
-
-				}
-			};
-        entry.add(new JLabel(((Integer)(index)).toString()));
+		Color background = historyCount % 2 == 0 ? new Color(191, 191, 191) : new Color(223, 223, 223);
+	
+        JPanel entry = new JPanel();
+		entry.setBackground(background);
+		GridBagConstraints gbc = new GridBagConstraints();
+		entry.setLayout(new GridBagLayout());
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+        entry.add(new JLabel(((Integer)(index)).toString()), gbc);
+		JPanel codePanel = new JPanel();
+		codePanel.setBackground(background);
+		gbc.fill = GridBagConstraints.VERTICAL;
+		gbc.gridx = 1;
+		gbc.gridy = 0;
+		entry.add(codePanel, gbc);
+		
+		JPanel responsePanel = new JPanel();
+		responsePanel.setBackground(background);
+		gbc.fill = GridBagConstraints.VERTICAL;
+		gbc.gridx = 1;
+		gbc.gridy = 1;
+		entry.add(responsePanel, gbc);
         
         for(int i = 0; i < code.length(); ++i){
-            JButton button = new JButton(code.substring(i, i+1)){
-				@Override
-				protected void paintComponent(Graphics grphcs) {
-					super.paintComponent(grphcs);
-					Graphics2D g2d = (Graphics2D) grphcs;
-					g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-							RenderingHints.VALUE_ANTIALIAS_ON);
-					GradientPaint gp = new GradientPaint(0, 0,
-							getBackground().brighter().brighter(), 0, getHeight(),
-							getBackground().darker().darker());
-					g2d.setPaint(gp);
-					g2d.fillRect(0, 0, getWidth(), getHeight()); 
-
-				}
-			};
+            GradientJButton button = new GradientJButton(" ");
             button.setBackground(ComboBoxRenderer.charToColor(code.charAt(i)));
             button.setEnabled(false);
             button.setSize(20, 20);
-            button.setLocation(i*20, 0);
-            entry.add(button);
+            //button.setLocation(i*20, 0);
+			gbc.fill = GridBagConstraints.HORIZONTAL;
+			gbc.gridx = i;
+			gbc.gridy = 0;
+            codePanel.add(button, gbc);
         }
-        for(int i = 0; i < response.length(); ++i){
-            JButton button = new JButton(response.substring(i, i+1)){
-				@Override
-				protected void paintComponent(Graphics grphcs) {
-					super.paintComponent(grphcs);
-					Graphics2D g2d = (Graphics2D) grphcs;
-					g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-							RenderingHints.VALUE_ANTIALIAS_ON);
-					GradientPaint gp = new GradientPaint(0, 0,
-							getBackground().brighter(), 0, getHeight(),
-							getBackground().darker());
-					g2d.setPaint(gp);
-					g2d.fillRect(0, 0, getWidth(), getHeight()); 
-
-				}
-			};
-            button.setBackground(charToColorResponse(response.charAt(i)));
-            button.setEnabled(false);
-            button.setSize(20, 20);
-            button.setLocation(i*20, 0);
-            entry.add(button);
-        }
+		if(response.charAt(0) != '0'){
+			for(int i = 0; i < response.length(); ++i){
+				GradientJButton button = new GradientJButton(" ");
+				button.setBackground(charToColorResponse(response.charAt(i)));
+				button.setEnabled(false);
+				button.setSize(20, 20);
+				gbc.fill = GridBagConstraints.HORIZONTAL;
+				gbc.gridx = i;
+				gbc.gridy = 0;
+				responsePanel.add(button, gbc);
+			}
+		}
+		else{
+			responsePanel.setBackground(background);
+			JButton button = new JButton(" ");
+			button.setOpaque(false);
+			button.setContentAreaFilled(false);
+			button.setBorderPainted(false);
+			button.setEnabled(false);
+			button.setSize(20, 20);
+			gbc.fill = GridBagConstraints.HORIZONTAL;
+			gbc.gridx = 0;
+			gbc.gridy = 0;
+			responsePanel.add(button, gbc);
+		}
+		
         return entry;
     }
     
@@ -292,23 +320,9 @@ public class PlayingField extends JPanel {
 	private void initActivePane(){
         String[] array = colors.split("(?!^)");
         for(int i = 0; i < codeLength; ++i){
-            JComboBox comboBox = new JComboBox(array){
-				@Override
-				protected void paintComponent(Graphics grphcs) {
-					super.paintComponent(grphcs);
-					Graphics2D g2d = (Graphics2D) grphcs;
-					g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-							RenderingHints.VALUE_ANTIALIAS_ON);
-					GradientPaint gp = new GradientPaint(0, 0,
-							getBackground().brighter(), 0, getHeight(),
-							getBackground().darker());
-					g2d.setPaint(gp);
-					g2d.fillRect(0, 0, getWidth(), getHeight()); 
-
-				}
-			};
+            GradientJComboBox comboBox = new GradientJComboBox(array);
             comboBox.setBackground(ComboBoxRenderer.charToColor(colors.charAt(0)));
-            comboBox.setSize(40, 40);
+            comboBox.setSize(60, 80);
             comboBox.setLocation(i*50, 0);
             comboBox.setRenderer(new ComboBoxRenderer());
             comboBox.addItemListener(new ItemChangeListener(this));
@@ -336,6 +350,7 @@ public class PlayingField extends JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
 	private javax.swing.JLabel statusLabel;
     private javax.swing.JPanel activePane;
+	private javax.swing.JButton randomButton;
     private javax.swing.JButton addButton;
     private javax.swing.JPanel historyPane;
     // End of variables declaration//GEN-END:variables
