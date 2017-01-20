@@ -7,6 +7,7 @@ import java.util.Random;
 
 import network.NetworkParticipant;
 import network.GAMESTATE;
+import network.STOPTYPE;
 
 import playingfield.PlayingField;
 
@@ -36,6 +37,10 @@ public class Server extends NetworkParticipant {
 	
 	public void start(){
 		startPlayingField(true, "Set code and wait for client");
+	}
+	
+	public void restart(){
+		System.out.println("Server: Restart");
 	}
     
     private void startServer() {
@@ -107,8 +112,11 @@ public class Server extends NetworkParticipant {
 				gameState = GAMESTATE.GAMEOVER;
 			}
         }
+		else if(args[0].equals("QUIT")){
+			stop(STOPTYPE.RECEIVED);
+		}
 		else{
-			System.err.println("Unknow command received!");
+			System.err.println("Unknown command received!");
 		}
     }
     
@@ -117,14 +125,19 @@ public class Server extends NetworkParticipant {
 		startServer();
     }
 
-    public void stop(boolean initiated){
+    public void stop(STOPTYPE stopType){
     	stopped = true;
-    	if(initiated){
-    		sendCommand("");
+    	if(stopType == STOPTYPE.WINDOWCLOSED){
+    		sendCommand("QUIT");
+    	}
+		else if(stopType == STOPTYPE.QUIT){
+    		sendCommand("QUIT");
+			closeWindow();
     	}
     	
     	try{
     		closeIO();
+			stop = true;
 			if(meThread != null){
 				meThread.join();
 			}
@@ -151,9 +164,6 @@ public class Server extends NetworkParticipant {
 	        System.err.println("Server: Shutdown failed.");
 	        e.printStackTrace();
 	    }
-    	if(!initiated){
-    		start();
-    	}
     }
 
     private String getMyAddress() {

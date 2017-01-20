@@ -99,26 +99,6 @@ public class PlayingField extends JPanel {
 		
 		activePane.add(randomButton);
 		activePane.add(addButton);
-		/*
-        javax.swing.GroupLayout activePaneLayout = new javax.swing.GroupLayout(activePane);
-        activePane.setLayout(activePaneLayout);
-        activePaneLayout.setHorizontalGroup(
-            activePaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, activePaneLayout.createSequentialGroup()
-                //.addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(addButton)
-				.addComponent(randomButton))
-                //.addGap(18, 18, 18))
-        );
-        activePaneLayout.setVerticalGroup(
-            activePaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, activePaneLayout.createSequentialGroup()
-                //.addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(addButton)
-				.addComponent(randomButton))
-                //.addGap(457, 457, 457))
-        );
-		*/
 
         historyPane.setBackground(new java.awt.Color(204, 204, 204));
 
@@ -270,6 +250,25 @@ public class PlayingField extends JPanel {
 		
         return entry;
     }
+	
+	public void openAgainWindow(){
+		PlayingField me = this;
+        java.awt.EventQueue.invokeLater(() -> {
+        	AgainWindow againWindow = new AgainWindow(me);
+        	//againWindow.addWindowListener(new PlayingFieldListener(this));
+        	againWindow.setVisible(true);
+        });
+	}
+	
+	public void again(boolean again){
+		if(again){
+			netParticipant.restart();
+		}
+		else{
+			netParticipant.sendCode("QUIT");
+			netParticipant.stop(STOPTYPE.QUIT);
+		}
+	}
     
     /**
      * Adds a code and the response to the history view

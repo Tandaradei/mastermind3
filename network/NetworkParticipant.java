@@ -22,6 +22,7 @@ public abstract class NetworkParticipant implements Runnable {
     protected PlayingField playingField;
     protected JFrame playingFieldFrame;
     protected boolean stopped = false;
+	protected boolean stop = false;
     protected Thread meThread;
 
     protected String colors;
@@ -52,6 +53,8 @@ public abstract class NetworkParticipant implements Runnable {
     }
 
     public abstract void start();
+	
+	public abstract void restart();
 
 
 
@@ -94,7 +97,7 @@ public abstract class NetworkParticipant implements Runnable {
 
     public void run() {
         try{
-            while (in != null) {
+            while (in != null && !stop) {
                 // Eingabestrom lesen
                 String line = in.readLine();
                 if (line == null || line.equals("")) {
@@ -112,7 +115,7 @@ public abstract class NetworkParticipant implements Runnable {
                 runnerThread.start();
             }
             if(!stopped){
-            	stop(false);
+            	stop(STOPTYPE.RECEIVED);
         	}
         } 
         catch(IOException e){
@@ -143,10 +146,11 @@ public abstract class NetworkParticipant implements Runnable {
     public abstract void sendCode(String code);
     
     protected void closeWindow(){
+		System.out.println("Closing window");
     	playingFieldFrame.dispose();
     	System.out.println("Window closed");
     }
     
-    public abstract void stop(boolean initiated);
+    public abstract void stop(STOPTYPE stopType);
     
 }

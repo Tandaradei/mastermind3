@@ -3,6 +3,7 @@ package network.client;
 import java.net.*;
 
 import network.NetworkParticipant;
+import network.STOPTYPE;
 import playingfield.PlayingField;
 
 import java.io.*;
@@ -57,18 +58,29 @@ public class Client extends NetworkParticipant {
         clientThread.start();
 
     }
+	
+	public void restart(){
+		System.out.println("Client: Restart");
+	}
     
-    public void stop(boolean initiated){
+    public void stop(STOPTYPE stopType){
     	stopped = true;
-    	if(initiated){
-    		sendCommand("");
+    	if(stopType == STOPTYPE.WINDOWCLOSED){
+    		sendCommand("QUIT");
+    	}
+		else if(stopType == STOPTYPE.QUIT){
+    		sendCommand("QUIT");
+			closeWindow();
     	}
     	else{
     		closeWindow();
     	}
     	try{
     		closeIO();
-    		meThread.join();
+			stop = true;
+			if(meThread != null){
+				meThread.join();
+			}
     	}
     	catch(InterruptedException e){
     		e.printStackTrace();
@@ -119,10 +131,14 @@ public class Client extends NetworkParticipant {
 			else{
 				playingField.setStatusText("Gameover without a valid reason!");
 			}
+			playingField.openAgainWindow();
 			
         }
+		else if(args[0].equals("QUIT")){
+			stop(STOPTYPE.RECEIVED);
+		}
 		else{
-			System.err.println("Unknow command received!");
+			System.err.println("Unknown command received!");
 		}
     }
     
