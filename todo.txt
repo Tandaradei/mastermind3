@@ -1,0 +1,9 @@
+TODO:
+[ ] KI einbinden
+[ ] Highscore einbinden
+[x] Spinner Spielanzahl
+[ ] Server/Client stop Bugs beheben
+[ ] Nach GameOver Auswahl Newgame/Quit für Client
+[ ] Quit Command für Server/Client
+
+[ ] (Anleitung zu HTML konvertieren -> als Helppage einfügen und zu PDF konvertieren)

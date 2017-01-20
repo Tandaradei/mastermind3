@@ -24,18 +24,14 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.synth.SynthLookAndFeel;
-import network.NetworkParticipant;
 import network.client.Client;
 import network.server.Server;
-
-import playingfield.PlayingField;
 
 public class MainWindow extends javax.swing.JFrame {
     
     private MainWindow me = this;
     private String allColors = "0123456789abcdef";
     private String originalCode = "";
-    private PlayingField playingField;
     /**
      * Creates new form MyJFrame
      */
@@ -64,7 +60,6 @@ public class MainWindow extends javax.swing.JFrame {
         joinPortLabel = new javax.swing.JLabel();
         autoModeCheckbox = new javax.swing.JCheckBox();
         joinButton = new javax.swing.JButton();
-        aiEnabledCheckbox = new javax.swing.JCheckBox();
         hostPanel = new javax.swing.JPanel();
         codeLengthLabel = new javax.swing.JLabel();
         codeLengthSpinner = new javax.swing.JSpinner();
@@ -82,6 +77,8 @@ public class MainWindow extends javax.swing.JFrame {
         exitMenuButton = new javax.swing.JMenu();
         helpMenuButton = new javax.swing.JMenu();
         highscoreMenuButton = new javax.swing.JMenu();
+		gameCountLabel = new javax.swing.JLabel();
+		gameCountSpinner = new javax.swing.JSpinner();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Mastermind");
@@ -120,9 +117,6 @@ public class MainWindow extends javax.swing.JFrame {
         });
 
 
-        aiEnabledCheckbox.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        aiEnabledCheckbox.setText("AI - Mode");
-
         javax.swing.GroupLayout joinPanelLayout = new javax.swing.GroupLayout(joinPanel);
         joinPanel.setLayout(joinPanelLayout);
         joinPanelLayout.setHorizontalGroup(
@@ -134,6 +128,8 @@ public class MainWindow extends javax.swing.JFrame {
                         .addGroup(joinPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(joinButton)
                             .addComponent(autoModeCheckbox)
+							.addComponent(gameCountLabel)
+							.addComponent(gameCountSpinner)
                             .addComponent(nameLabel)
                             .addGroup(joinPanelLayout.createSequentialGroup()
                                 .addGroup(joinPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -149,8 +145,6 @@ public class MainWindow extends javax.swing.JFrame {
                             .addComponent(nameTextField))
                         .addContainerGap(98, Short.MAX_VALUE))
                     .addGroup(joinPanelLayout.createSequentialGroup()
-                        .addGroup(joinPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(aiEnabledCheckbox))
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
         joinPanelLayout.setVerticalGroup(
@@ -171,8 +165,10 @@ public class MainWindow extends javax.swing.JFrame {
                     .addComponent(colonLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(autoModeCheckbox)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(aiEnabledCheckbox)
+				.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+				.addComponent(gameCountLabel)
+				.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+				.addComponent(gameCountSpinner)
                 .addGap(26, 26, 26)
                 .addComponent(joinButton)
                 .addContainerGap(126, Short.MAX_VALUE))
@@ -192,6 +188,13 @@ public class MainWindow extends javax.swing.JFrame {
 
         colorCountSpinner.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         colorCountSpinner.setModel(new javax.swing.SpinnerNumberModel(4, 2, 15, 1));
+		
+		gameCountLabel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        gameCountLabel.setText("Number of games (0 = unlimited)");
+
+        gameCountSpinner.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
+        gameCountSpinner.setModel(new javax.swing.SpinnerNumberModel(0, 0, 100, 1));
+        gameCountSpinner.setValue(0);
 
         codeLengthRandomCheckbox.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         codeLengthRandomCheckbox.setText("Random");
@@ -330,7 +333,7 @@ public class MainWindow extends javax.swing.JFrame {
         menuBar.add(helpMenuButton);
 
         highscoreMenuButton.setText("Highscore");
-        highscoreMenuButton.setToolTipText("Show a help page");
+        highscoreMenuButton.setToolTipText("Show the local highscore");
         highscoreMenuButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 highscoreMenuButtonjMenuHelpClicked(evt);
@@ -456,7 +459,6 @@ public class MainWindow extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JCheckBox aiEnabledCheckbox;
     private javax.swing.JSpinner attemptsCountSpinner;
     private javax.swing.JCheckBox autoModeCheckbox;
     private javax.swing.JLabel codeLengthLabel;
@@ -486,5 +488,7 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JSeparator seperator;
     private javax.swing.JTabbedPane tabbedPane;
     private javax.swing.JLabel tryCountLabel;
+	private javax.swing.JLabel gameCountLabel;
+	private javax.swing.JSpinner gameCountSpinner;
     // End of variables declaration//GEN-END:variables
 }
