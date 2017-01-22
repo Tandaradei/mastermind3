@@ -382,17 +382,20 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_colorCountRandomCheckboxStateChanged
 
     private void hostButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_hostButtonMouseClicked
+        Random rand = new Random();
+        int colorCount = colorCountRandomCheckbox.isSelected()? rand.nextInt(13) + 2 : (int)colorCountSpinner.getValue();
+        int codeLength = codeLengthRandomCheckbox.isSelected()? rand.nextInt(13) + 2 : (int)codeLengthSpinner.getValue();
         Server server = new Server(Integer.parseInt(hostPortTextField.getText())
                                     , (int)attemptsCountSpinner.getValue()
-                                    , (int)colorCountSpinner.getValue()
-                                    , (int)codeLengthSpinner.getValue());
+                                    , colorCount
+                                    , codeLength);
         //start server
         server.start();
     }//GEN-LAST:event_hostButtonMouseClicked
 
 
     private void joinButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_joinButtonActionPerformed
-        Client client = new Client(ipAddressTextField.getText(), Integer.parseInt(joinPortTextField.getText()), nameTextField.getText());
+        Client client = new Client(autoModeCheckbox.isSelected(), ipAddressTextField.getText(), Integer.parseInt(joinPortTextField.getText()), nameTextField.getText());
         client.start();
     }//GEN-LAST:event_joinButtonActionPerformed
 

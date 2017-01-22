@@ -251,24 +251,23 @@ public class PlayingField extends JPanel {
         return entry;
     }
 	
-	public void openAgainWindow(){
-		PlayingField me = this;
+    public void openAgainWindow(){
+        PlayingField me = this;
         java.awt.EventQueue.invokeLater(() -> {
-        	AgainWindow againWindow = new AgainWindow(me);
-        	//againWindow.addWindowListener(new PlayingFieldListener(this));
-        	againWindow.setVisible(true);
+            AgainWindow againWindow = new AgainWindow(me);
+            //againWindow.addWindowListener(new PlayingFieldListener(this));
+            againWindow.setVisible(true);
         });
-	}
-	
-	public void again(boolean again){
-		if(again){
-			netParticipant.restart();
-		}
-		else{
-			netParticipant.sendCode("QUIT");
-			netParticipant.stop(STOPTYPE.QUIT);
-		}
-	}
+    }
+
+    public void again(boolean again){
+        if(again){
+                netParticipant.restart();
+        }
+        else{
+                netParticipant.stop(STOPTYPE.QUIT);
+        }
+    }
     
     /**
      * Adds a code and the response to the history view

@@ -5,19 +5,23 @@ import java.net.*;
 import network.NetworkParticipant;
 import network.STOPTYPE;
 import playingfield.PlayingField;
+import ai.MastermindAI;
 
 import java.io.*;
 import javax.swing.JFrame;
 
 public class Client extends NetworkParticipant {
 
+    private boolean aiEnabled;
+    private MastermindAI mmAI;
     private String address = "127.0.0.1";
     private int port = 50004;
     private String code = "";
-	private String playerName;
+    private String response = "";
+    private String playerName;
 
-    public Client(String address, int port, String playerName){
-
+    public Client(boolean aiEnabled, String address, int port, String playerName){
+        this.aiEnabled = aiEnabled;
         this.address = address;
         this.port = port;
 		this.playerName = playerName;
@@ -109,18 +113,29 @@ public class Client extends NetworkParticipant {
     protected void executeCommand(String command){
         final String[] args = command.split(" ");
         if(args[0].equals("SETUP")){
-        	codeLength = Integer.parseInt(args[1]);
+            codeLength = Integer.parseInt(args[1]);
             colors = args[2];
             startPlayingField(false, "Start to guess (click on 'Help' in the MainWindow if you need)");
+            if(aiEnabled){
+                mmAI = new MastermindAI(codeLength, colors);
+            }
         }
         else if(args[0].equals("GUESS")){
-        	playingField.activateSendButton();
+            if(aiEnabled){
+                sendCode(mmAI.next(response));
+            }
+            else{
+                playingField.activateSendButton();
+            }
         }
         else if(args[0].equals("RESULT")){
-            String result = args[1];
-            playingField.addToHistory(code, result);
+            response = args[1];
+            playingField.addToHistory(code, response);
+            if(aiEnabled){
+                sendCode(mmAI.next(response));
+            }
         }
-		else if(args[0].equals("GAMEOVER")){
+        else if(args[0].equals("GAMEOVER")){
             String result = args[1];
             if(result.equals("WIN")){
 				playingField.setStatusText("Congratulations! You have won the game!");
