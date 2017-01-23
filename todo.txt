@@ -1,6 +1,6 @@
 TODO:
-[ ] KI einbinden
-[ ] Highscore einbinden
+[x] KI einbinden
+[x] Highscore einbinden
 [x] Spinner Spielanzahl
 [ ] Server/Client stop Bugs beheben
 [x] Nach GameOver Auswahl Newgame/Quit für Client
