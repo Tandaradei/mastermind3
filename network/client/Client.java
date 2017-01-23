@@ -122,7 +122,15 @@ public class Client extends NetworkParticipant {
         }
         else if(args[0].equals("GUESS")){
             if(aiEnabled){
-                sendCode(mmAI.next(response));
+                if(mmAI == null){
+                    try{
+                        Thread.sleep(200);
+                    }
+                    catch(InterruptedException e){
+                        e.printStackTrace();
+                    }
+                }
+                sendCode(mmAI.next2(response));
             }
             else{
                 playingField.activateSendButton();
@@ -132,7 +140,7 @@ public class Client extends NetworkParticipant {
             response = args[1];
             playingField.addToHistory(code, response);
             if(aiEnabled){
-                sendCode(mmAI.next(response));
+                sendCode(mmAI.next2(response));
             }
         }
         else if(args[0].equals("GAMEOVER")){

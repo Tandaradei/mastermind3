@@ -26,6 +26,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.synth.SynthLookAndFeel;
 import network.client.Client;
 import network.server.Server;
+import highscore.Highscore;
 
 public class MainWindow extends javax.swing.JFrame {
     
@@ -401,7 +402,7 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void highscoreMenuButtonjMenuHelpClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_highscoreMenuButtonjMenuHelpClicked
         java.awt.EventQueue.invokeLater(() -> {
-            new highscore.Highscore().setVisible(true);
+            Highscore.get().draw();
         });
     }//GEN-LAST:event_highscoreMenuButtonjMenuHelpClicked
     
@@ -459,6 +460,7 @@ public class MainWindow extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(() -> {
             new MainWindow().setVisible(true);
         });
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

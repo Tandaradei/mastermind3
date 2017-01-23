@@ -21,112 +21,88 @@ import javax.swing.table.*;
  * @author marius.claret
  *
  */
-public class Highscore extends JFrame{
+public class Highscore{
     private String[] data = new String[100];
-    private int size;
+    private int size = 0;
+    private final String[] headers = {"SCORE", "NAME", "ATTEMPTS", "CODELENGTH", "COLORCOUNT", "DATE", "TIME"};
     
-    public Highscore(){
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        read();
-
-        DefaultTableModel model = new DefaultTableModel(size, 6);
-        JTable table = new JTable(model);
-
-        table.getColumnModel().getColumn(0).setHeaderValue("PUNKTE");
-        table.getColumnModel().getColumn(1).setHeaderValue("NAME");
-        table.getColumnModel().getColumn(2).setHeaderValue("LAENGE");
-        table.getColumnModel().getColumn(3).setHeaderValue("VERSUCHE");
-        table.getColumnModel().getColumn(4).setHeaderValue("DATUM");
-        table.getColumnModel().getColumn(5).setHeaderValue("UHRZEIT");
-
-        for (int i = 0; i < size; i++) {
-            String [] item = data[i].split("\\$", -1);
-            model.setValueAt(item[0], i, 0);
-            model.setValueAt(item[1], i, 1);
-            model.setValueAt(item[2], i, 2);
-            model.setValueAt(item[3], i, 3);
-            model.setValueAt(item[4], i, 4);
-            model.setValueAt(item[5], i, 5);
+    private static Highscore highscore = null;
+    
+    private Highscore(){
+        //read();
+    }
+    
+    public static Highscore get(){
+        if(highscore == null){
+            highscore = new Highscore();
         }
-
-        JScrollPane scrollPane = new JScrollPane(table);
-        add(scrollPane, BorderLayout.CENTER);
-        setSize(500, 500);
+        return highscore;
     }
     
     /**
      * draw method to create the table
      */
-    /*
+    
     public void draw () {
         read();
         JFrame frame = new JFrame();
-        frame.
 
-        DefaultTableModel model = new DefaultTableModel(size, 6);
+        DefaultTableModel model = new DefaultTableModel(size, headers.length);
         JTable table = new JTable(model);
 
-        table.getColumnModel().getColumn(0).setHeaderValue("PUNKTE");
-        table.getColumnModel().getColumn(1).setHeaderValue("NAME");
-        table.getColumnModel().getColumn(2).setHeaderValue("LAENGE");
-        table.getColumnModel().getColumn(3).setHeaderValue("VERSUCHE");
-        table.getColumnModel().getColumn(4).setHeaderValue("DATUM");
-        table.getColumnModel().getColumn(5).setHeaderValue("UHRZEIT");
+        for(int i = 0; i < headers.length; ++i){
+            table.getColumnModel().getColumn(i).setHeaderValue(headers[i]);
+        }
 
         for (int i = 0; i < size; i++) {
             String [] item = data[i].split("\\$", -1);
-            model.setValueAt(item[0], i, 0);
-            model.setValueAt(item[1], i, 1);
-            model.setValueAt(item[2], i, 2);
-            model.setValueAt(item[3], i, 3);
-            model.setValueAt(item[4], i, 4);
-            model.setValueAt(item[5], i, 5);
+            for(int u = 0; u < headers.length; ++u){
+                model.setValueAt(item[u], i, u);
+            }
         }
 
         JScrollPane scrollPane = new JScrollPane(table);
         frame.add(scrollPane, BorderLayout.CENTER);
         frame.setSize(500, 500);
-
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        frame.setLocation(dim.width/2-frame.getSize().width/2, dim.height/2-frame.getSize().height/2);
         frame.setVisible(true);
     }
-    */
 
     public void read () {
-        try (BufferedReader br = new BufferedReader(new FileReader("highscore.txt"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("src/highscore.txt"))) {
             String line;
             size = 0;
             while ((line = br.readLine()) != null) {
+                System.out.println(line);
                 data[size++] = line;
             }
 
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
+        System.out.println("read complete");
     }
 
-    public void add (String name, int length, int trials) {
-        read();
-        int score = (length * 1000 / trials);
+    public void add (String name, int codeLength, int colorCount, int attempts) {
+        //read();
+        int score = (codeLength * colorCount * 1000 / attempts);
         String day = new SimpleDateFormat("dd.MM.yyyy").format(new Date());
         String time = new SimpleDateFormat("HH:mm").format(new Date());
         Boolean done = false;
 
         try{
-            PrintWriter writer = new PrintWriter("highscore.txt", "UTF-8");
+            PrintWriter writer = new PrintWriter("src/highscore.txt", "UTF-8");
             
             for (int i = 0; i < size; i++) {
                 int d = Integer.parseInt(data[i].split("\\$", -1)[0]);
                 if (score > d && done == false) {
-                    writer.println(score + "$" + name + "$" + length + "$" + trials + "$" + day + "$" + time);
+                    writer.println(score + "$" + name + "$" + attempts + "$" + codeLength + "$" + colorCount + "$" + day + "$" + time);
                     done = true;
                 }
                 writer.println(data[i]);
             }
 
             if (done == false) {
-                writer.println(score + "$" + name + "$" + length + "$" + trials + "$" + day + "$" + time);
+                writer.println(score + "$" + name + "$" + attempts + "$" + codeLength + "$" + colorCount + "$" + day + "$" + time);
             }
                 
             writer.close();
@@ -136,9 +112,9 @@ public class Highscore extends JFrame{
     }
 
     public void show () {
-        read();
+        //read();
         try{
-            Path filePath = new File("highscore.txt").toPath();
+            Path filePath = new File("src/highscore.txt").toPath();
             Charset charset = Charset.defaultCharset();        
             List<String> stringList = Files.readAllLines(filePath, charset);
             String[] stringArray = stringList.toArray(new String[]{});

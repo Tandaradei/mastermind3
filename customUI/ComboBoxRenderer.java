@@ -29,18 +29,18 @@ class ComboBoxRenderer extends JLabel implements ListCellRenderer<Object> {
      */
     
     static Color[] colorTable ={hexToRGB("#00a300"), hexToRGB("#ee1111"), hexToRGB("#ffc40d"),
-								hexToRGB("#2d89ef"), hexToRGB("#603cba"), hexToRGB("#1e7145"),
-								hexToRGB("#da532c"), hexToRGB("#2b5797"), hexToRGB("#9f00a7"), 
-								hexToRGB("#00aba9"), hexToRGB("#e3a21a"), hexToRGB("#eff4ff"),
-								hexToRGB("#99b433"), hexToRGB("#795548"), hexToRGB("#7e3878")};
+                                hexToRGB("#2d89ef"), hexToRGB("#603cba"), hexToRGB("#1e7145"),
+                                hexToRGB("#da532c"), hexToRGB("#2b5797"), hexToRGB("#9f00a7"), 
+                                hexToRGB("#00aba9"), hexToRGB("#e3a21a"), hexToRGB("#eff4ff"),
+                                hexToRGB("#99b433"), hexToRGB("#795548"), hexToRGB("#7e3878")};
     
 	
 	static private Color hexToRGB(String hex){
-		 return new Color(
-            Integer.valueOf( hex.substring( 1, 3 ), 16 ),
-            Integer.valueOf( hex.substring( 3, 5 ), 16 ),
-            Integer.valueOf( hex.substring( 5, 7 ), 16 ) 
-			);
+            return new Color(
+                Integer.valueOf( hex.substring( 1, 3 ), 16 ),
+                Integer.valueOf( hex.substring( 3, 5 ), 16 ),
+                Integer.valueOf( hex.substring( 5, 7 ), 16 ) 
+            );
 	}
 	
     static private int charToIndex(char input){

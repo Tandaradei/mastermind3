@@ -5,6 +5,9 @@
  */
 package ai;
 
+import java.util.Random;
+import network.server.Server;
+
 /**
  *
  * @author laurin.agostini
@@ -25,6 +28,7 @@ public class MastermindAI {
     private int checkingIndex = 0;
     private String saved = "";
     
+    
     public MastermindAI(int codeLength, String colors){
         this.codeLength = codeLength;
         this.colors = colors;
@@ -33,20 +37,35 @@ public class MastermindAI {
         }
     }
     
-    private int getBlackDifference(String response1, String response2){
-        int black1 = 0;
-        int black2 = 0;
-        for(int i = 0; i < response1.length(); ++i) {
-            black1 += response1.charAt(i) == 'B' ? 1 : 0;
+    private int charToPoints(char character){
+        switch(character){
+            case 'B':
+                return codeLength;
+            case 'W':
+                return 1;
+            default:
+                return 0;
         }
-        for(int i = 0; i < response2.length(); ++i) {
-            black2 += response2.charAt(i) == 'B' ? 1 : 0;
-        }
-        return black1 - black2;
     }
     
+    private int getPointDifference(String response1, String response2){
+        int points1 = 0;
+        int points2 = 0;
+        for(int i = 0; i < response1.length(); ++i) {
+            points1 += charToPoints(response1.charAt(i));
+            
+        }
+        for(int i = 0; i < response2.length(); ++i) {
+            points2 += charToPoints(response2.charAt(i));
+        }
+        System.out.println("Points: " + points1 + " <> " + points2);
+        return points1 - points2;
+    }
+    
+   
     public String next(String response){
         String code = "";
+        // First code
         if(prevCode == null) {
             currentColor = colors.charAt(currentColorIndex);
             for(int i = 0; i < codeLength; ++i){
@@ -56,21 +75,21 @@ public class MastermindAI {
             bestCode = code;
         }
         else {
+            // Use last code as base
             code = prevCode;
             
-            //System.out.println(code);
-            int blackDifference = getBlackDifference(response, lastResponse);
+            // Get Difference of current response and last response
+            int pointDifference = getPointDifference(response, lastResponse);
             lastResponse = response;
-            if(blackDifference < 0) {
-                System.out.println("Back to " + bestCode);
+            // If worse, go back
+            if(pointDifference < 0) {
+                //System.out.println("Back to " + bestCode);
                 code = bestCode;
                 lastResponse = bestResponse;
-                //saved = saved.substring(0, lastCheckingIndex) + "x" + saved.substring(lastCheckingIndex+1);
-                //System.out.println("Less than: " + saved);
                 
                 
             }
-            else if(blackDifference > 0){
+            else if(pointDifference > 0){
                 code = prevCode;
                 bestCode = code;
                 bestResponse = response;
@@ -86,9 +105,12 @@ public class MastermindAI {
             if(saved.charAt(checkingIndex) == 'x'){
                 checkingIndex++;
                 if(checkingIndex >= codeLength){
-                checkingIndex = 0;
-                currentColorIndex++;
+                    checkingIndex = 0;
+                    currentColorIndex++;
+                }
             }
+            if(currentColorIndex >= colors.length()){
+                currentColorIndex = 0;
             }
             currentColor = colors.charAt(currentColorIndex);
             code = code.substring(0, checkingIndex) + currentColor + code.substring(checkingIndex+1);
@@ -103,5 +125,43 @@ public class MastermindAI {
         prevCode = code;
         return code;
     }
+    
+    private long number = 0;
+    private String lastCode = "";
+    
+    
+    private String nextCodeWithSameResponse(String response){
+        String code = "";
+        do{
+            code = "";
+            long currentNumber = number++;
+            for(int i = 0; i < codeLength; ++i){
+                code += colors.charAt((int)(currentNumber % colors.length()));
+                currentNumber /= colors.length();
+            }
+        }while(!response.equals(Server.checkKey(lastCode, code)));
+        return code;
+    }
+    
+    public String next2(String response){
+        String code = "";
+        if(response == null || response.length() == 0){
+            for(int i = 0; i < codeLength; ++i){
+                code += colors.charAt(i % colors.length());
+            }
+        }
+        else{
+            number = 0;
+            Random rand = new Random();
+            int max = rand.nextInt(10);
+            for(int i = 0; i < max; ++i){
+                code = nextCodeWithSameResponse(response);
+            }
+        }
+        lastCode = code;
+        return code;
+    }
+
+   
     
 }

@@ -10,6 +10,7 @@ import network.GAMESTATE;
 import network.STOPTYPE;
 
 import playingfield.PlayingField;
+import highscore.Highscore;
 
 
 public class Server extends NetworkParticipant {
@@ -17,7 +18,7 @@ public class Server extends NetworkParticipant {
     private String allColors = "123456789abcdef";
     private int port;
     private int attempts = 0;
-	private int maxAttempts;
+    private int maxAttempts;
     private String playerName = "Client04";
     private ServerSocket serverSocket;
     private String key = "";
@@ -95,22 +96,23 @@ public class Server extends NetworkParticipant {
 			gameState = GAMESTATE.INGAME;
         }
         else if(args[0].equals("CHECK") && gameState == GAMESTATE.INGAME){
-			attempts++;
+            attempts++;
             String code = args[1];
-            String result = checkKey(code, key);
+            String result = checkKey(key, code);
             playingField.addToHistory(code, result);
             sendCommand("RESULT " + result);
-			playingField.setStatusText(playerName + " has guessed " + (maxAttempts > 0 ? "(attempt " + attempts + " of " + maxAttempts + ")" : ""));
-			if(result.length() == codeLength && !result.contains("W")){
-				sendCommand("GAMEOVER WIN");
-				playingField.setStatusText(playerName + " has won the game with " + attempts + (maxAttempts > 0 ? "of  " + maxAttempts : "") + " attempts");
-				gameState = GAMESTATE.GAMEOVER;
-			}
-			else if(maxAttempts > 0 && attempts >= maxAttempts){
-				sendCommand("GAMEOVER LOSE");
-				playingField.setStatusText(playerName + " has lost the game with " + attempts + " of " + maxAttempts + " attempts");
-				gameState = GAMESTATE.GAMEOVER;
-			}
+                playingField.setStatusText(playerName + " has guessed " + (maxAttempts > 0 ? "(attempt " + attempts + " of " + maxAttempts + ")" : ""));
+                if(result.length() == codeLength && !result.contains("W")){
+                        sendCommand("GAMEOVER WIN");
+                        playingField.setStatusText(playerName + " has won the game with " + attempts + (maxAttempts > 0 ? "of  " + maxAttempts : "") + " attempts");
+                        Highscore.get().add(playerName, codeLength, colors.length(), attempts);
+                        gameState = GAMESTATE.GAMEOVER;
+                }
+                else if(maxAttempts > 0 && attempts >= maxAttempts){
+                        sendCommand("GAMEOVER LOSE");
+                        playingField.setStatusText(playerName + " has lost the game with " + attempts + " of " + maxAttempts + " attempts");
+                        gameState = GAMESTATE.GAMEOVER;
+                }
         }
 		else if(args[0].equals("QUIT")){
 			stop(STOPTYPE.RECEIVED);
@@ -178,35 +180,34 @@ public class Server extends NetworkParticipant {
 
 
     // Das eingegebene Codewort überprüfen
-    private String checkKey(String original, String toTest){
+    public static String checkKey(String original, String toTest){
         String result = "";
+        String helper = "";
         for(int i = 0; i < original.length(); i++){
             if(original.charAt(i) == toTest.charAt(i)){
-                String newMyKey = original.substring(0, i) + 'x' + original.substring(i+1);
-                String newToTest = toTest.substring(0, i) + 'x' + toTest.substring(i+1);
-                original = newMyKey;
-                toTest = newToTest;
+                helper += 'x';
                 result += 'B';
+            }
+            else{
+                helper += 'o';
             }
         }
         for(int i = 0; i < original.length(); i++){
-            if(original.charAt(i) != 'x'){
+            if(helper.charAt(i) != 'x'){
                 for(int u = 0; u < toTest.length(); u++){
-                    if(original.charAt(i) == toTest.charAt(u)){
-                        String newMyKey = original.substring(0, i) + 'x' + original.substring(i+1);
-                        String newToTest = toTest.substring(0, u) + 'x' + toTest.substring(u+1);
-                        original = newMyKey;
-                        toTest = newToTest;
+                    if(helper.charAt(u) != 'x' && original.charAt(i) == toTest.charAt(u)){
+                        helper = helper.substring(0, u) + "x" + helper.substring(u+1);
                         result += 'W';
                         break;
                     }
                 }
             }
         }
-        if(result.length() > 0){
-            return result;
+        if(result.length() == 0){
+            result = "0";
         }
-        return "0";
+        System.out.println(original + " <> " + toTest + " -> " + result);
+        return result;
     }
     
     
