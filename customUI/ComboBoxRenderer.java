@@ -17,8 +17,8 @@ import javax.swing.ListCellRenderer;
  * @author laurin.agostini
  */
 @SuppressWarnings("serial")
-class ComboBoxRenderer extends JLabel implements ListCellRenderer<Object> {
-    ComboBoxRenderer() {
+public class ComboBoxRenderer extends JLabel implements ListCellRenderer<Object> {
+    public ComboBoxRenderer() {
         setOpaque(true);
     }
     

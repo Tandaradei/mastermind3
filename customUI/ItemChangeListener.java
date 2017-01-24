@@ -3,20 +3,21 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package playingfield;
+package customUI;
 
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import javax.swing.JComboBox;
 
+import playingfield.PlayingField;
 
 /**
  *
  * @author laurin.agostini
  */
-class ItemChangeListener implements ItemListener{
+public class ItemChangeListener implements ItemListener{
     PlayingField playingField;
-    ItemChangeListener(PlayingField playingField){
+    public ItemChangeListener(PlayingField playingField){
         this.playingField = playingField;
     }
     @SuppressWarnings("rawtypes")
