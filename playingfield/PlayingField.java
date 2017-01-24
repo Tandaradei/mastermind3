@@ -51,11 +51,12 @@ public class PlayingField extends JPanel {
         initComponents();
         initActivePane();
         initHistory();
+        randomButton.setBackground(Color.WHITE);
         addButton.setBackground(Color.WHITE);
-		if(isServer){
-			randomButton.setVisible(true);
-			addButton.setText("Set as Code");
-		}
+        if(isServer){
+                randomButton.setVisible(true);
+                addButton.setText("Set as Code");
+        }
 		
     }
     
@@ -71,11 +72,13 @@ public class PlayingField extends JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 	
-		statusLabel = new javax.swing.JLabel("Initiated");
+		statusLabel = new javax.swing.JTextField("Initiated");
         activePane = new javax.swing.JPanel();
         addButton = new javax.swing.JButton();
 		randomButton = new javax.swing.JButton();
         historyPane = new javax.swing.JPanel();
+
+        statusLabel.setEditable(false);
 
         activePane.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         activePane.setPreferredSize(new java.awt.Dimension(426, 67));
@@ -346,7 +349,7 @@ public class PlayingField extends JPanel {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-	private javax.swing.JLabel statusLabel;
+	private javax.swing.JTextField statusLabel;
     private javax.swing.JPanel activePane;
 	private javax.swing.JButton randomButton;
     private javax.swing.JButton addButton;

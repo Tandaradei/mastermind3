@@ -19,7 +19,8 @@ public class AgainWindow extends javax.swing.JFrame {
      * Creates new form HelpPage
      */
     public AgainWindow(PlayingField playingField) {
-		this.playingField = playingField;
+        this.setSize(500, 250);
+        this.playingField = playingField;
         initComponents();
     }
 

@@ -68,29 +68,27 @@ public class Highscore{
     }
 
     public void read () {
-        try (BufferedReader br = new BufferedReader(new FileReader("src/highscore.txt"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("highscore.txt"))) {
             String line;
             size = 0;
             while ((line = br.readLine()) != null) {
-                System.out.println(line);
                 data[size++] = line;
             }
 
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
-        System.out.println("read complete");
     }
 
     public void add (String name, int codeLength, int colorCount, int attempts) {
-        //read();
+        read();
         int score = (codeLength * colorCount * 1000 / attempts);
         String day = new SimpleDateFormat("dd.MM.yyyy").format(new Date());
         String time = new SimpleDateFormat("HH:mm").format(new Date());
         Boolean done = false;
 
         try{
-            PrintWriter writer = new PrintWriter("src/highscore.txt", "UTF-8");
+            PrintWriter writer = new PrintWriter("highscore.txt", "UTF-8");
             
             for (int i = 0; i < size; i++) {
                 int d = Integer.parseInt(data[i].split("\\$", -1)[0]);
@@ -114,7 +112,7 @@ public class Highscore{
     public void show () {
         //read();
         try{
-            Path filePath = new File("src/highscore.txt").toPath();
+            Path filePath = new File("highscore.txt").toPath();
             Charset charset = Charset.defaultCharset();        
             List<String> stringList = Files.readAllLines(filePath, charset);
             String[] stringArray = stringList.toArray(new String[]{});

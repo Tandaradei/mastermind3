@@ -22,7 +22,7 @@ public abstract class NetworkParticipant implements Runnable {
     protected PlayingField playingField;
     protected JFrame playingFieldFrame;
     protected boolean stopped = false;
-	protected boolean stop = false;
+    protected boolean stop = false;
     protected Thread meThread;
 
     protected String colors;
@@ -38,32 +38,33 @@ public abstract class NetworkParticipant implements Runnable {
 
     protected void startPlayingField(boolean isServer, String text){
         playingField = new PlayingField(isServer, colors, codeLength);
-		playingField.setStatusText(text);
+        playingField.setStatusText(text);
         playingField.setNetParticipant(this);
         java.awt.EventQueue.invokeLater(() -> {
-        	playingFieldFrame = new JFrame();
-        	playingFieldFrame.addWindowListener(new PlayingFieldListener(this));
-        	playingFieldFrame.setSize(400, 600);
-        	playingFieldFrame.setResizable(true);
-        	playingFieldFrame.add(playingField);
-        	playingFieldFrame.setVisible(true);
-        	playingFieldFrame.setTitle((isServer ? "Server" : "Client"));
+            playingFieldFrame = new JFrame();
+            playingFieldFrame.addWindowListener(new PlayingFieldListener(this));
+            //playingFieldFrame.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+            playingFieldFrame.setSize(400, 600);
+            playingFieldFrame.setResizable(true);
+            playingFieldFrame.add(playingField);
+            playingFieldFrame.setVisible(true);
+            playingFieldFrame.setTitle((isServer ? "Server" : "Client"));
             
         });
     }
 
     public abstract void start();
 	
-	public abstract void restart();
+    public abstract void restart();
 
 
 
     protected void sendCommand(String command) {
-        System.out.println("Sending: " + command);
         try{
             if(out != null){
-        		out.write(String.format("%s%n", command));
-            	out.flush();
+                System.out.println("Sending: " + command);
+                out.write(String.format("%s%n", command));
+                out.flush();
             }
 
         } catch(IOException e){
@@ -73,21 +74,21 @@ public abstract class NetworkParticipant implements Runnable {
 
     protected void executeNextCommand(){
     	if(commands.size() > 0){
-    		try{
-    			if(commandThread != null && commandThread.isAlive()){
-    				commandThread.join();
-    			}
-    			Runnable runner = new Runnable(){
-    				public void run(){
-    					executeCommand(commands.poll());
-    				}
-    			};
-    			commandThread = new Thread(runner);
-    			commandThread.start();
-    		}
-    		catch(InterruptedException e){
-    			e.printStackTrace();
-    		}
+            try{
+                if(commandThread != null && commandThread.isAlive()){
+                    commandThread.join();
+                }
+                Runnable runner = new Runnable(){
+                    public void run(){
+                        executeCommand(commands.poll());
+                    }
+                };
+                commandThread = new Thread(runner);
+                commandThread.start();
+            }
+            catch(InterruptedException e){
+                    e.printStackTrace();
+            }
     		
     		
     	}
@@ -99,12 +100,12 @@ public abstract class NetworkParticipant implements Runnable {
         try{
             while (in != null && !stop) {
                 // Eingabestrom lesen
-                String line = in.readLine();
+                String line = in != null? in.readLine() : null;
+                System.out.println("Received: " + line);
                 if (line == null || line.equals("")) {
-                	System.out.println("null received");
                     break;
                 }
-                System.out.println("Received: " + line);
+                
                 commands.add(line);
                 Runnable runner = new Runnable(){
                     public void run(){
@@ -115,28 +116,24 @@ public abstract class NetworkParticipant implements Runnable {
                 runnerThread.start();
             }
             if(!stopped){
-            	stop(STOPTYPE.RECEIVED);
-        	}
+                stop(STOPTYPE.RECEIVED);
+            }
         } 
         catch(IOException e){
-                e.printStackTrace();
+            //stop(STOPTYPE.RECEIVED);
         }
     }
     
     protected void closeIO(){
     	try{
-    		System.out.println("Closing IO");
-    		if(in != null){
-    			in.close();
-    			in = null;
-    			System.out.println("in closed");
-    		}
-    		if(out != null){
-    			out.close();
-    			out = null;
-    			System.out.println("out closed");
-    		}
-    		System.out.println("IO closed");
+            if(in != null){
+                    in.close();
+                    in = null;
+            }
+            if(out != null){
+                    out.close();
+                    out = null;
+            }
     	} 
     	catch(IOException e){
             e.printStackTrace();
@@ -146,9 +143,7 @@ public abstract class NetworkParticipant implements Runnable {
     public abstract void sendCode(String code);
     
     protected void closeWindow(){
-		System.out.println("Closing window");
     	playingFieldFrame.dispose();
-    	System.out.println("Window closed");
     }
     
     public abstract void stop(STOPTYPE stopType);

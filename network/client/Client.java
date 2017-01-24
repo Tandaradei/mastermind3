@@ -39,21 +39,19 @@ public class Client extends NetworkParticipant {
 
                     in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                     out = new OutputStreamWriter(clientSocket.getOutputStream());
-
+                    System.out.println("Try to connect to " + address + ":" + port);
                     if(clientSocket.isConnected()) {
-                        System.out.println("Client: Connected!");
-                     // Eingabestrom
-
-                        //startPlayingField(false);
-                        sendCommand("NEWGAME " + playerName);
+                        System.out.println("Connected");
                         meThread = new Thread(me);
                         meThread.start();
+                        sendCommand("NEWGAME " + playerName);
+                        
                     } else {
-                        System.out.println("Verbindung konnte nicht hergestellt werden!");
+                        System.err.println("Couldn't connect to server");
                     }
 
                 } catch(IOException e){
-                        e.printStackTrace();
+                        System.err.println(e.getMessage());
                 }
             }
         };
@@ -64,44 +62,43 @@ public class Client extends NetworkParticipant {
     }
 	
 	public void restart(){
-		System.out.println("Client: Restart");
+           start();
 	}
     
     public void stop(STOPTYPE stopType){
+        System.out.println("Client: stop called");
+        System.out.println("Client: STOPTYPE: " + stopType);
     	stopped = true;
     	if(stopType == STOPTYPE.WINDOWCLOSED){
-    		sendCommand("QUIT");
+            sendCommand("QUIT");
     	}
-		else if(stopType == STOPTYPE.QUIT){
-    		sendCommand("QUIT");
-			closeWindow();
+        else if(stopType == STOPTYPE.QUIT){
+            sendCommand("QUIT");
+            closeWindow();
     	}
     	else{
-    		closeWindow();
+            closeWindow();
     	}
+        /*
     	try{
-    		closeIO();
-			stop = true;
-			if(meThread != null){
-				meThread.join();
-			}
+            closeIO();
+            stop = true;
+            if(meThread != null){
+                meThread.join();
+            }
     	}
     	catch(InterruptedException e){
     		e.printStackTrace();
     	}
-    	System.out.println("Client: stop called!");
-    	
+    	*/
     	
     	try {
-    		System.out.println("Client: Stopping connection!");
-    		if(clientSocket != null && !clientSocket.isClosed()){
-				clientSocket.shutdownOutput();
-				clientSocket.close();
-    		}
-	        System.out.println("Client: Connection stopped!");
+            if(clientSocket != null && !clientSocket.isClosed()){
+                clientSocket.shutdownOutput();
+                clientSocket.close();
+            }
 	    } catch (IOException e) {
-	        System.err.println("Client: Shutdown failed.");
-	        e.printStackTrace();
+	        System.err.println(e.getMessage());
 	    }
     }
 
@@ -111,6 +108,9 @@ public class Client extends NetworkParticipant {
     }
     
     protected void executeCommand(String command){
+        if(command == null){
+            command = "";
+        }
         final String[] args = command.split(" ");
         if(args[0].equals("SETUP")){
             codeLength = Integer.parseInt(args[1]);
@@ -122,6 +122,7 @@ public class Client extends NetworkParticipant {
         }
         else if(args[0].equals("GUESS")){
             if(aiEnabled){
+                // If AI wasn't initialized yet, wait short time
                 if(mmAI == null){
                     try{
                         Thread.sleep(200);
@@ -133,7 +134,12 @@ public class Client extends NetworkParticipant {
                 sendCode(mmAI.next2(response));
             }
             else{
-                playingField.activateSendButton();
+                if(playingField != null){
+                    playingField.activateSendButton();
+                }
+                else{
+                    System.err.println("Error with playingfield");
+                }
             }
         }
         else if(args[0].equals("RESULT")){

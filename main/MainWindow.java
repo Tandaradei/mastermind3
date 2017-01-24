@@ -78,8 +78,6 @@ public class MainWindow extends javax.swing.JFrame {
         exitMenuButton = new javax.swing.JMenu();
         helpMenuButton = new javax.swing.JMenu();
         highscoreMenuButton = new javax.swing.JMenu();
-		gameCountLabel = new javax.swing.JLabel();
-		gameCountSpinner = new javax.swing.JSpinner();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Mastermind");
@@ -117,36 +115,29 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
 
-
         javax.swing.GroupLayout joinPanelLayout = new javax.swing.GroupLayout(joinPanel);
         joinPanel.setLayout(joinPanelLayout);
         joinPanelLayout.setHorizontalGroup(
             joinPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(joinPanelLayout.createSequentialGroup()
                 .addGap(32, 32, 32)
-                .addGroup(joinPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(joinPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(joinButton)
+                    .addComponent(autoModeCheckbox)
+                    .addComponent(nameLabel)
                     .addGroup(joinPanelLayout.createSequentialGroup()
-                        .addGroup(joinPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(joinButton)
-                            .addComponent(autoModeCheckbox)
-							.addComponent(gameCountLabel)
-							.addComponent(gameCountSpinner)
-                            .addComponent(nameLabel)
+                        .addGroup(joinPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(joinPanelLayout.createSequentialGroup()
-                                .addGroup(joinPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(joinPanelLayout.createSequentialGroup()
-                                        .addComponent(ipAddressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(colonLabel))
-                                    .addComponent(ipAddressLabel))
+                                .addComponent(ipAddressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(joinPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(joinPortLabel)
-                                    .addComponent(joinPortTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(nameTextField))
-                        .addContainerGap(98, Short.MAX_VALUE))
-                    .addGroup(joinPanelLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                                .addComponent(colonLabel))
+                            .addComponent(ipAddressLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(joinPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(joinPortLabel)
+                            .addComponent(joinPortTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(nameTextField))
+                .addContainerGap(98, Short.MAX_VALUE))
         );
         joinPanelLayout.setVerticalGroup(
             joinPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -166,13 +157,9 @@ public class MainWindow extends javax.swing.JFrame {
                     .addComponent(colonLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(autoModeCheckbox)
-				.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-				.addComponent(gameCountLabel)
-				.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-				.addComponent(gameCountSpinner)
-                .addGap(26, 26, 26)
+                .addGap(18, 18, 18)
                 .addComponent(joinButton)
-                .addContainerGap(126, Short.MAX_VALUE))
+                .addContainerGap(198, Short.MAX_VALUE))
         );
 
         tabbedPane.addTab("Join", joinPanel);
@@ -188,14 +175,7 @@ public class MainWindow extends javax.swing.JFrame {
         colorCountLabel.setText("Colors");
 
         colorCountSpinner.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
-        colorCountSpinner.setModel(new javax.swing.SpinnerNumberModel(4, 2, 15, 1));
-		
-		gameCountLabel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        gameCountLabel.setText("Number of games (0 = unlimited)");
-
-        gameCountSpinner.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
-        gameCountSpinner.setModel(new javax.swing.SpinnerNumberModel(0, 0, 100, 1));
-        gameCountSpinner.setValue(0);
+        colorCountSpinner.setModel(new javax.swing.SpinnerNumberModel(6, 2, 15, 1));
 
         codeLengthRandomCheckbox.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         codeLengthRandomCheckbox.setText("Random");
@@ -237,7 +217,6 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
 
-
         javax.swing.GroupLayout hostPanelLayout = new javax.swing.GroupLayout(hostPanel);
         hostPanel.setLayout(hostPanelLayout);
         hostPanelLayout.setHorizontalGroup(
@@ -261,7 +240,7 @@ public class MainWindow extends javax.swing.JFrame {
                             .addComponent(codeLengthRandomCheckbox)))
                     .addComponent(attemptsCountSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(hostPortTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(130, Short.MAX_VALUE))
+                .addContainerGap(131, Short.MAX_VALUE))
         );
         hostPanelLayout.setVerticalGroup(
             hostPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -288,9 +267,9 @@ public class MainWindow extends javax.swing.JFrame {
                 .addComponent(hostPortLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(hostPortTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(13, 13, 13)
+                .addGap(18, 18, 18)
                 .addComponent(hostButton)
-                .addContainerGap(80, Short.MAX_VALUE))
+                .addContainerGap(111, Short.MAX_VALUE))
         );
 
         colorCountSpinner.getAccessibleContext().setAccessibleName("");
@@ -334,7 +313,7 @@ public class MainWindow extends javax.swing.JFrame {
         menuBar.add(helpMenuButton);
 
         highscoreMenuButton.setText("Highscore");
-        highscoreMenuButton.setToolTipText("Show the local highscore");
+        highscoreMenuButton.setToolTipText("Show a help page");
         highscoreMenuButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 highscoreMenuButtonjMenuHelpClicked(evt);
@@ -398,6 +377,7 @@ public class MainWindow extends javax.swing.JFrame {
     private void joinButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_joinButtonActionPerformed
         Client client = new Client(autoModeCheckbox.isSelected(), ipAddressTextField.getText(), Integer.parseInt(joinPortTextField.getText()), nameTextField.getText());
         client.start();
+        System.out.println("Start new client");
     }//GEN-LAST:event_joinButtonActionPerformed
 
     private void highscoreMenuButtonjMenuHelpClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_highscoreMenuButtonjMenuHelpClicked
@@ -493,7 +473,5 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JSeparator seperator;
     private javax.swing.JTabbedPane tabbedPane;
     private javax.swing.JLabel tryCountLabel;
-	private javax.swing.JLabel gameCountLabel;
-	private javax.swing.JSpinner gameCountSpinner;
     // End of variables declaration//GEN-END:variables
 }

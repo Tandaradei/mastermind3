@@ -21,15 +21,11 @@ public class PlayingFieldListener implements WindowListener {
 
 	@Override
 	public void windowClosed(WindowEvent arg0) {
-		// TODO Auto-generated method stub
-		System.out.println("windowClosed called on PlayingField");
-		netParticipant.stop(STOPTYPE.WINDOWCLOSED);
+		//netParticipant.stop(STOPTYPE.WINDOWCLOSED);
 	}
 
 	@Override
 	public void windowClosing(WindowEvent arg0) {
-		// TODO Auto-generated method stub
-		System.out.println("windowClosing called on PlayingField");
 		netParticipant.stop(STOPTYPE.WINDOWCLOSED);
 	}
 

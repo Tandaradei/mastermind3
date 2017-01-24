@@ -5,6 +5,7 @@
  */
 package ai;
 
+import java.util.ArrayList;
 import java.util.Random;
 import network.server.Server;
 
@@ -127,19 +128,28 @@ public class MastermindAI {
     }
     
     private long number = 0;
-    private String lastCode = "";
+    private ArrayList<String> lastCodes = new ArrayList<String>();
+    private ArrayList<String> lastResponses = new ArrayList<String>();
     
     
-    private String nextCodeWithSameResponse(String response){
+    private String nextCodeWithSameResponse(){
         String code = "";
+        boolean isInLastCodes = true;
         do{
+            isInLastCodes = true;
             code = "";
             long currentNumber = number++;
             for(int i = 0; i < codeLength; ++i){
                 code += colors.charAt((int)(currentNumber % colors.length()));
                 currentNumber /= colors.length();
             }
-        }while(!response.equals(Server.checkKey(lastCode, code)));
+            for(int i = 0; i < lastCodes.size(); ++i){
+                if(!lastResponses.get(i).equals(Server.checkKey(lastCodes.get(i), code))){
+                    isInLastCodes = false;
+                    break;
+                }
+            }
+        }while(!isInLastCodes);
         return code;
     }
     
@@ -151,14 +161,12 @@ public class MastermindAI {
             }
         }
         else{
-            number = 0;
+            lastResponses.add(response);
             Random rand = new Random();
-            int max = rand.nextInt(10);
-            for(int i = 0; i < max; ++i){
-                code = nextCodeWithSameResponse(response);
-            }
+            number = rand.nextInt((int) Math.pow(colors.length(), codeLength));
+            code = nextCodeWithSameResponse();
         }
-        lastCode = code;
+        lastCodes.add(code);
         return code;
     }
 

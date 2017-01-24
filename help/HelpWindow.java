@@ -6,6 +6,9 @@
 package help;
 
 import java.awt.event.WindowEvent;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 /**
  *
@@ -18,6 +21,21 @@ public class HelpWindow extends javax.swing.JFrame {
      */
     public HelpWindow() {
         initComponents();
+        readFile();
+    }
+    
+    private void readFile(){
+        try (BufferedReader br = new BufferedReader(new FileReader("src/help.html"))) {
+            String result = "";
+            String line;
+            while((line = br.readLine()) != null){
+                result += line;
+            }
+            jTextPane1.setText(result);
+
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     /**
@@ -40,7 +58,28 @@ public class HelpWindow extends javax.swing.JFrame {
         jTextPane1.setEditable(false);
         jTextPane1.setContentType("text/html"); // NOI18N
         jTextPane1.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
-        jTextPane1.setText(" <h1> Help </h1> <hr> <h2> General </h2> <ul>         <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>         <li>Aliquam tincidunt mauris eu risus.</li>         <li>Vestibulum auctor dapibus neque.</li>  </ul> \t  <hr> <h2> Rules </h2> <ul>         <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>         <li>Aliquam tincidunt mauris eu risus.</li>         <li>Vestibulum auctor dapibus neque.</li>  </ul> \t  <hr> <h2> Play as Client </h2> <ul>         <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>         <li>Aliquam tincidunt mauris eu risus.</li>         <li>Vestibulum auctor dapibus neque.</li>  </ul> \t  <hr> <h2> Host a Server </h2> <ul>         <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>         <li>Aliquam tincidunt mauris eu risus.</li>         <li>Vestibulum auctor dapibus neque.</li>  </ul> \t       ");
+        jTextPane1.setText( "<h2>Spielprinzip</h2> " +
+                            "<p align=\"justify\">" +
+                            "Der Server legt zu Beginn einen variablen (Voreinstellung: 4) Farbcode fest, " +
+                            "der aus 2 bis 15 Farben (Voreinstellung: 6) ausgewählt wird. Eine Farbe kann " +
+                            "auch mehrmals verwendet werden. Der Spieler versucht nun diesen Code zu erraten. " +
+                            "Beim ersten Versuch wird der Farbcode von dem Spieler zufällig gewählt und blind geraten, " +
+                            "die weiteren Züge geschehen dann mit Hilfe der Antworten aus den vorhergegangenen Zügen.	" +
+                            "</p>" +
+                            "<p align=\"justify\">" +
+                            "Nach jedem Zug bekommt der Spieler eine Antwort, wie viele Stellen der Farbkombination er " +
+                            "in Farbe und Position richtig gesetzt hat (Schwarzer Pin) und wie viele Teile der Farbkombination " +
+                            "zwar die richtige Farbe haben, aber an einer falschen Position stehen (Weißer Pin). " +
+                            "Alle Rateversuche und Antworten bleiben bis zum Ende des Spiels sichtbar." +
+                            "</p>" +
+                            "<p align=\"justify\">" +
+                            "Ziel des Spielers ist es, die Farbkombination mit möglichst wenigen Versuchen zu erraten." +
+                            "</p>" +
+                            "<p align=\"justify\">" +
+                            "Nach dem Start des Programmes hat der Nutzer die Wahl einen Server zu erstellen " +
+                            "oder sich mit einem Server zu verbinden. Über die Reiter gelangt er jeweils zu den nötigen Einstellungen " +
+                            "(Der Reiter „Join“ steht für den Client und der Reiter „Host“ steht für den Server)." +
+                            "</p>" );
         jScrollPane1.setViewportView(jTextPane1);
 
         jMenu1.setText("Exit");
@@ -69,8 +108,7 @@ public class HelpWindow extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuExitClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuExitClicked
-      System.out.println("Help Window Exit clicked");
-      this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+       this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
     }//GEN-LAST:event_jMenuExitClicked
 
     /**

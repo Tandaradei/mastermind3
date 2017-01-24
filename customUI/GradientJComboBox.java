@@ -22,7 +22,7 @@ import javax.swing.SwingUtilities;
 @SuppressWarnings("serial")
 public class GradientJComboBox extends JComboBox{
     public GradientJComboBox(String[] array) {
-		super(array);
+        super(array);
         setOpaque(true);
     }
     

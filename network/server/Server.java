@@ -41,7 +41,8 @@ public class Server extends NetworkParticipant {
 	}
 	
 	public void restart(){
-		System.out.println("Server: Restart");
+            closeWindow();
+            start();
 	}
     
     private void startServer() {
@@ -50,17 +51,23 @@ public class Server extends NetworkParticipant {
             public void run(){
                 try {
                     String hostname = getMyAddress();
-					playingField.setStatusText("Waiting for client on "+hostname+":"+port+" ...");
-					gameState = GAMESTATE.SETUP;
-					//System.out.println(v);
+                    gameState = GAMESTATE.SETUP;
+                    if(serverSocket != null){
+                        serverSocket.close();
+                    }
                     serverSocket = new ServerSocket(port);
+                    playingField.setStatusText("Waiting for client on " + hostname + ":" + port + " ...");
                     try{
                     	Socket clientSocket = serverSocket.accept();
-                    	System.out.println("Server: Connected!");
-						playingField.setStatusText("Client connected");
+                        playingField.setStatusText("Client connected");
+                        /*if(in != null){
+                            in.close();
+                        }*/
                         in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-
-                        // Ausgabestrom
+                        
+                        /*if(out != null){
+                            out.close();
+                        }*/
                         out = new OutputStreamWriter(clientSocket.getOutputStream());
                         
                         meThread = new Thread(me);
@@ -103,68 +110,70 @@ public class Server extends NetworkParticipant {
             sendCommand("RESULT " + result);
                 playingField.setStatusText(playerName + " has guessed " + (maxAttempts > 0 ? "(attempt " + attempts + " of " + maxAttempts + ")" : ""));
                 if(result.length() == codeLength && !result.contains("W")){
-                        sendCommand("GAMEOVER WIN");
-                        playingField.setStatusText(playerName + " has won the game with " + attempts + (maxAttempts > 0 ? "of  " + maxAttempts : "") + " attempts");
-                        Highscore.get().add(playerName, codeLength, colors.length(), attempts);
-                        gameState = GAMESTATE.GAMEOVER;
+                    sendCommand("GAMEOVER WIN");
+                    playingField.setStatusText(playerName + " has won the game with " + attempts + (maxAttempts > 0 ? "of  " + maxAttempts : "") + " attempts");
+                    Highscore.get().add(playerName, codeLength, colors.length(), attempts);
+                    gameState = GAMESTATE.GAMEOVER;
                 }
                 else if(maxAttempts > 0 && attempts >= maxAttempts){
-                        sendCommand("GAMEOVER LOSE");
-                        playingField.setStatusText(playerName + " has lost the game with " + attempts + " of " + maxAttempts + " attempts");
-                        gameState = GAMESTATE.GAMEOVER;
+                    sendCommand("GAMEOVER LOSE");
+                    playingField.setStatusText(playerName + " has lost the game with " + attempts + " of " + maxAttempts + " attempts");
+                    gameState = GAMESTATE.GAMEOVER;
                 }
         }
 		else if(args[0].equals("QUIT")){
-			stop(STOPTYPE.RECEIVED);
+                    stop(STOPTYPE.RECEIVED);
 		}
 		else{
-			System.err.println("Unknown command received!");
+                    System.err.println("Unknown command received!");
 		}
     }
     
     public void sendCode(String code){
     	key = code;
-		startServer();
+        startServer();
     }
 
     public void stop(STOPTYPE stopType){
+        System.out.println("Server: stop called");
+        System.out.println("Server: STOPTYPE: " + stopType);
     	stopped = true;
     	if(stopType == STOPTYPE.WINDOWCLOSED){
-    		sendCommand("QUIT");
+            sendCommand("QUIT");
     	}
-		else if(stopType == STOPTYPE.QUIT){
-    		sendCommand("QUIT");
-			closeWindow();
+        else if(stopType == STOPTYPE.QUIT){
+            sendCommand("QUIT");
+            closeWindow();
     	}
-    	
+        else{
+            restart();
+        }
     	try{
-    		closeIO();
-			stop = true;
-			if(meThread != null){
-				meThread.join();
-			}
+            //closeIO();
+            
+            stop = true;
+            if(meThread != null){
+                meThread.join();
+            }
+            
     	}
     	catch(InterruptedException e){
     		e.printStackTrace();
     	}
     	
-    	System.out.println("Server: stop called!");
     	
     	
     	try {
-    		System.out.println("Server: Stopping connection!");
     		if(serverSocket != null){
     			serverSocket.close();
-    			System.out.println("Server: ServerSocket closed!");
     		}
     		if(clientSocket != null && !clientSocket.isClosed()){
-				clientSocket.shutdownOutput();
-    			clientSocket.close();
+                    clientSocket.shutdownOutput();
+                    clientSocket.close();
     		}
-    		System.out.println("Server: Connection stopped!");
 	    } catch (IOException e) {
 	        System.err.println("Server: Shutdown failed.");
-	        e.printStackTrace();
+	        System.err.println(e.getMessage());
 	    }
     }
 
@@ -206,7 +215,7 @@ public class Server extends NetworkParticipant {
         if(result.length() == 0){
             result = "0";
         }
-        System.out.println(original + " <> " + toTest + " -> " + result);
+        //System.out.println("Comparing " + toTest + " to " + original + " -> " + result);
         return result;
     }
     
