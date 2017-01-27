@@ -7,8 +7,11 @@ package help;
 
 import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.InputStreamReader;
+import java.io.FileInputStream;
 import java.io.IOException;
+
+import java.nio.charset.Charset;
 
 /**
  *
@@ -25,12 +28,15 @@ public class HelpWindow extends javax.swing.JFrame {
     }
     
     private void readFile(){
-        try (BufferedReader br = new BufferedReader(new FileReader("src/help.html"))) {
+		Charset charset = Charset.forName("UTF-8");
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("help.html"), charset))) {
             String result = "";
             String line;
             while((line = br.readLine()) != null){
+				//System.out.println(line);
                 result += line;
             }
+			jTextPane1.setContentType("text/html");
             jTextPane1.setText(result);
 
         } catch (IOException e) {
@@ -58,28 +64,7 @@ public class HelpWindow extends javax.swing.JFrame {
         jTextPane1.setEditable(false);
         jTextPane1.setContentType("text/html"); // NOI18N
         jTextPane1.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
-        jTextPane1.setText( "<h2>Spielprinzip</h2> " +
-                            "<p align=\"justify\">" +
-                            "Der Server legt zu Beginn einen variablen (Voreinstellung: 4) Farbcode fest, " +
-                            "der aus 2 bis 15 Farben (Voreinstellung: 6) ausgewählt wird. Eine Farbe kann " +
-                            "auch mehrmals verwendet werden. Der Spieler versucht nun diesen Code zu erraten. " +
-                            "Beim ersten Versuch wird der Farbcode von dem Spieler zufällig gewählt und blind geraten, " +
-                            "die weiteren Züge geschehen dann mit Hilfe der Antworten aus den vorhergegangenen Zügen.	" +
-                            "</p>" +
-                            "<p align=\"justify\">" +
-                            "Nach jedem Zug bekommt der Spieler eine Antwort, wie viele Stellen der Farbkombination er " +
-                            "in Farbe und Position richtig gesetzt hat (Schwarzer Pin) und wie viele Teile der Farbkombination " +
-                            "zwar die richtige Farbe haben, aber an einer falschen Position stehen (Weißer Pin). " +
-                            "Alle Rateversuche und Antworten bleiben bis zum Ende des Spiels sichtbar." +
-                            "</p>" +
-                            "<p align=\"justify\">" +
-                            "Ziel des Spielers ist es, die Farbkombination mit möglichst wenigen Versuchen zu erraten." +
-                            "</p>" +
-                            "<p align=\"justify\">" +
-                            "Nach dem Start des Programmes hat der Nutzer die Wahl einen Server zu erstellen " +
-                            "oder sich mit einem Server zu verbinden. Über die Reiter gelangt er jeweils zu den nötigen Einstellungen " +
-                            "(Der Reiter „Join“ steht für den Client und der Reiter „Host“ steht für den Server)." +
-                            "</p>" );
+        jTextPane1.setText( "Loading..." );
         jScrollPane1.setViewportView(jTextPane1);
 
         jMenu1.setText("Exit");

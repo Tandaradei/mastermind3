@@ -286,6 +286,21 @@ public class PlayingField extends JPanel {
         history.add(getListEntryRendered(code, response, historyCount), gbc, 0);
         revalidate();
     }
+	
+	public void reset(){
+		String[] array = colors.split("(?!^)");
+        for(int i = 0; i < codeLength; ++i){
+			comboBoxes[i].setBackground(ComboBoxRenderer.charToColor(colors.charAt(0)));
+		}
+		historyCount = 0;
+		history.removeAll();
+		history.revalidate();
+        revalidate();
+		if(isServer){
+			randomButton.setEnabled(true);
+			addButton.setEnabled(true);
+		}
+	}
     
     public void activateSendButton(){
     	if(!isServer){

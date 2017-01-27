@@ -56,6 +56,10 @@ public abstract class NetworkParticipant implements Runnable {
     public abstract void start();
 	
     public abstract void restart();
+	
+	protected void resetPlayingField(){
+		playingField.reset();
+	}
 
 
 

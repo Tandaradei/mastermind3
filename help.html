@@ -1,22 +1,332 @@
-<h2>Spielprinzip</h2>
-<p align="justify">
-Der Server legt zu Beginn einen variablen (Voreinstellung: 4) Farbcode fest,
-der aus 2 bis 15 Farben (Voreinstellung: 6) ausgewählt wird. Eine Farbe kann
-auch mehrmals verwendet werden. Der Client versucht nun diesen Code zu erraten.
-Beim ersten Versuch wird der Farbcode von dem Spieler zufällig gewählt und blind geraten, 
-die weiteren Züge geschehen dann mit Hilfe der Antworten aus den vorhergegangenen Zügen.
+﻿<table cellspacing="0" cellpadding="0" border="0" align="left">
+    <tbody>
+        <tr>
+            <td width="96" valign="top">
+            </td>
+            <td width="168" valign="bottom">
+                <p>
+                    <strong>Mastermind </strong>
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td width="96" valign="top">
+            </td>
+            <td width="168">
+                <p>
+                    Gruppe 04
+                </p>
+                <p>
+                    [60883] Völker Alexander
+                </p>
+                <p>
+                    [60526] Agostini Laurin
+                </p>
+                <p>
+                    [60725] Claret Marius
+                </p>
+                <p>
+                    [60812] Bastillo Jannik
+                </p>
+                <p>
+                    [60785] Stricker Friedrich
+                </p>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<table width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+    <tbody>
+        <tr>
+            <td valign="top">
+                <p align="center">
+                    <strong>[</strong>
+                    <strong>Benutzerhandbuch]</strong>
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td valign="top">
+                <p>
+                    [Geben Sie hier das Exposee für das Dokument ein. Das
+                    Exposee ist meist eine Kurzbeschreibung des
+                    Dokumentinhalts. Geben Sie hier das Exposee für das
+                    Dokument ein. Das Exposee ist meist eine Kurzbeschreibung
+                    des Dokumentinhalts.]
+                </p>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<p align="center">
+    <img
+        src="file:///C:\Users\60526\AppData\Local\Temp\OICE_B2CD0C76-921B-4A9A-BB86-6BBECFFFC5B5.0\msohtmlclip1\01\clip_image002.png"
+        height="511"
+        width="523"
+    />
+    <strong>
+        <em>
+            <u>
+                <br clear="all"/>
+            </u>
+        </em>
+    </strong>
+    <strong><em><u></u></em></strong>
 </p>
-<p align="justify">
-Nach jedem Zug bekommt der Spieler eine Antwort, wie viele Stellen der Farbkombination er 
-in Farbe und Position richtig gesetzt hat (Schwarzer Pin) und wie viele Teile der Farbkombination 
-zwar die richtige Farbe haben, aber an einer falschen Position stehen (Weißer Pin). 
-Alle Rateversuche und Antworten bleiben bis zum Ende des Spiels sichtbar.
+<div>
+    <p>
+        Inhalt
+    </p>
+</div>
+<p>
+    <a href="#_Toc473293700">Das Spielprinzip. 2</a>
 </p>
-<p align="justify">
-Ziel des Spielers ist es, die Farbkombination mit möglichst wenigen Versuchen zu erraten.
+<p>
+    <a href="#_Toc473293701">Einen Server erstellen. 3</a>
 </p>
-<p align="justify">
-Nach dem Start des Programmes hat der Nutzer die Wahl einen Server zu erstellen 
-oder sich mit einem Server zu verbinden. Über die Reiter gelangt er jeweils zu den nötigen Einstellungen 
-(Der Reiter "Join" steht für den Client und der Reiter "Host" steht für den Server).
+<p>
+    <a href="#_Toc473293702">Einem Server beitreten (als Client). 5</a>
+</p>
+<p>
+    <a href="#_Toc473293703">Zum Spiel 6</a>
+</p>
+<p>
+    <a href="#_Toc473293704">Zu der Navigationsleiste. 7</a>
+</p>
+<p>
+    <u> </u>
+</p>
+<p>
+    <u> </u>
+</p>
+<p>
+    <u> </u>
+</p>
+<p>
+    <u> </u>
+</p>
+<p>
+    <u> </u>
+</p>
+<p>
+    <u> </u>
+</p>
+<p>
+    <u> </u>
+</p>
+<p>
+    <u> </u>
+</p>
+<p>
+    <u> </u>
+</p>
+<p>
+    <u> </u>
+</p>
+<p>
+    <u> </u>
+</p>
+<p>
+    <u> </u>
+</p>
+<p>
+    <u> </u>
+</p>
+<p>
+    <u> </u>
+</p>
+<p>
+    <u> </u>
+</p>
+<div>
+    <h1>
+        <a name="_Toc473293700">Das Spielprinzip</a>
+    </h1>
+</div>
+<p>
+    <br/>
+    Der Server legt zu Beginn einen variablen Farbcode fest, der aus 2 bis 15
+    Farben ausgewählt wird (voreingestellt sind standardmäßig die Länge 4 und
+    Anzahl der Farben ist 6). Eine Farbe kann auch mehrmals vorkommen. Der
+    Spieler versucht nun diesen Code zu erraten. Beim ersten Versuch wird der
+    Farbcode meistzufällig von dem Spieler gewählt, die weiteren Züge geschehen
+    dann mit Hilfe der Antworten aus den vorhergegangenen Zügen (der Nutzer hat
+    dennoch die Möglichkeit weiterhin blind zu raten).
+    <br/>
+    <br/>
+    Nach jedem Zug bekommt der Spieler eine Antwort, wie viele Stellen der
+    Farbkombination er in Farbe und Position richtig gesetzt hat (Schwarzer
+    Pin) und wie viele Teile der Farbkombination zwar die richtige Farbe haben,
+    aber an einer falschen Position stehen (Weißer Pin), erscheinen keine Pins,
+    ist nichts richtig. Alle Rateversuche und Antworten bleiben bis zum Ende
+    des Spiels sichtbar.
+    <br/>
+    <br/>
+    Ziel des Spielers ist es, die Farbkombination mit möglichst wenigen
+    Versuchen zu erraten.
+    <br/>
+    <br/>
+    Nach dem Start des Programmes hat der Nutzer die Wahl einen Server zu
+    erstellen oder sich mit einem zu verbinden. Über die Reiter gelangt er
+    jeweils zu den nötigen Einstellungen (Der Reiter „Join“ steht für den
+    Client und der Reiter „Host“ steht für den Server).
+    <br/>
+    <br/>
+</p>
+<div>
+    <h1>
+        <a name="_Toc473293701">Einen Server erstellen</a>
+    </h1>
+</div>
+<p>
+    <u> </u>
+</p>
+<p>
+    <u> </u>
+</p>
+<p align="center">
+    <img
+        src="file:///C:\Users\60526\AppData\Local\Temp\OICE_B2CD0C76-921B-4A9A-BB86-6BBECFFFC5B5.0\msohtmlclip1\01\clip_image004.png"
+        height="534"
+        width="501"
+    />
+</p>
+<p>
+    <br/>
+    Für das Erstellen eines Servers wählt der Nutzer die Länge der
+    Farbkombination, die Anzahl der zu verwendeten Farben und die maximale
+    Anzahl der Rateversuche, wobei 0 für unendlich viele steht. Voreingestellt
+    ist eine Farbkombination der Länge 4 und die Anzahl der Farben ist 6.
+    <br/>
+    <br/>
+    Danach wählt der Nutzer noch den Port des Servers (Voreinstellung: 50004)
+    und klickt auf den „Host“-Button.
+</p>
+<p align="center">
+    <img
+        src="file:///C:\Users\60526\AppData\Local\Temp\OICE_B2CD0C76-921B-4A9A-BB86-6BBECFFFC5B5.0\msohtmlclip1\01\clip_image006.png"
+        height="651"
+        width="450"
+    />
+</p>
+<p>
+    Das Spielfeld erscheint und der Nutzer kann die Farbfolge, mit den
+    voreingestellten Parametern selber auswählen oder mit dem „Randomize“-
+    Button, zufällig generieren lassen. Das Codewort kann man beliebig oft
+    generieren lassen und/oder selbst bearbeiten. Ist der Nutzer mit der
+    Farbfolge zufrieden, muss er zum Schluss auf den „Set as Code“-Button
+    klicken um die Kombination zu speichern, ab da ist es möglich, sich mit dem
+    Server zu verbinden. Verbindet sich ein Client mit dem Server muss dieser
+    versuchen diese ausgewählte Farbfolge zu erraten.
+    <br/>
+    <br/>
+</p>
+<div>
+    <h1>
+        <a name="_Toc473293702">Einem Server beitreten (als Client)</a>
+    </h1>
+</div>
+<p>
+    <u> </u>
+</p>
+<p>
+    <u> </u>
+</p>
+<p align="center">
+    <img
+        src="file:///C:\Users\60526\AppData\Local\Temp\OICE_B2CD0C76-921B-4A9A-BB86-6BBECFFFC5B5.0\msohtmlclip1\01\clip_image008.png"
+        height="534"
+        width="501"
+    />
+</p>
+<p>
+    <br/>
+    Der Nutzer legt zu Beginn einen Namen fest, wählt die passende IP-Adresse
+    und den Port des Servers gegen den er spielen möchte. Möchte der Nutzer
+    selber spielen, lässt er das Feld für den „Automatic Mode“ leer, wenn er
+    die Künstliche Intelligenz spielen lassen möchte, setzt er einen Haken. Zum
+    Schluss kann er sich noch aussuchen wie viele Partien er spielen möchte.
+    <br/>
+    Hat der Spieler alle nötigen Parameter gesetzt, klickt er auf den
+    „Join“-Button und das Spiel startet (solange ein Server bereit steht). Der
+    Spieler hat jederzeit die Möglichkeit das laufende Programm zu beenden.
+</p>
+<div>
+    <h1>
+        <a name="_Toc473293703">Zum Spiel</a>
+    </h1>
+</div>
+<p align="center">
+    <img
+        src="file:///C:\Users\60526\AppData\Local\Temp\OICE_B2CD0C76-921B-4A9A-BB86-6BBECFFFC5B5.0\msohtmlclip1\01\clip_image010.png"
+        height="565"
+        width="392"
+    />
+</p>
+<p>
+    <br/>
+    Startet der Nutzer das Programm als Client, erscheint nach Eingabe aller
+    Parameter, das Spielfeld.
+    <br/>
+    In der Oberen Leiste kann der Spieler seine Farbkombination auswählen, wenn
+    er meint die richtige Kombination erraten zu haben (oder einfach blind
+    versucht), klickt der Spieler auf den „Send“-Button um seinen Tipp
+    abzugeben.
+    <br/>
+    Unten im Spielfeld erscheint dann die ausgewählte Kombination und darunter
+    erscheinen dann entweder schwarze, weiße oder keine Pins.
+    <br/>
+    Stimmt der Rateversuch mit der Farbkombination überein, ist das Spiel zu
+    Ende und der Name wird in den Highscore eingetragen, überschreitet er die
+    Anzahl der maximalen Rateversuche, ist das Spiel auch zu Ende. Der Spieler
+    hat in beiden Fällen die Möglichkeiten ein neues Spiel zu starten oder das
+    Programm zu beenden.
+</p>
+<div>
+    <h1>
+        <a name="_Toc473293704">Zu der Navigationsleiste</a>
+    </h1>
+</div>
+<p align="center">
+    <img
+        src="file:///C:\Users\60526\AppData\Local\Temp\OICE_B2CD0C76-921B-4A9A-BB86-6BBECFFFC5B5.0\msohtmlclip1\01\clip_image012.png"
+        height="127"
+        width="515"
+    />
+    <br/>
+    Klickt der Nutzer auf den „Exit“-Button dann schließt sich das Programm.
+</p>
+<p align="center">
+    <img
+        src="file:///C:\Users\60526\AppData\Local\Temp\OICE_B2CD0C76-921B-4A9A-BB86-6BBECFFFC5B5.0\msohtmlclip1\01\clip_image014.png"
+        height="547"
+        width="515"
+    />
+</p>
+<p>
+    Klickt er auf den „Help“-Button, erscheint das Spielprinzip.
+</p>
+<p align="center">
+    <img
+        src="file:///C:\Users\60526\AppData\Local\Temp\OICE_B2CD0C76-921B-4A9A-BB86-6BBECFFFC5B5.0\msohtmlclip1\01\clip_image016.png"
+        height="550"
+        width="550"
+    />
+</p>
+<p>
+    Klickt er auf den „Highscore“-Button, erscheint analog die Tabelle mit
+    Punktzahl, Name, Anzahl der Versuche, die Codelänge, Anzahl der Farben,
+    Datum und Uhrzeit. Hier wird der eingegebene Name mit Punktzahl eingetragen
+    (solange er das Spiel gewonnen hat).
+</p>
+<p>
+    Die Punktzahl oder „Score“ wird wie folgt errechnet:
+</p>
+<p align="center">
+    <img
+        src="file:///C:\Users\60526\AppData\Local\Temp\OICE_B2CD0C76-921B-4A9A-BB86-6BBECFFFC5B5.0\msohtmlclip1\01\clip_image018.png"
+        height="37"
+        width="293"
+    />
+    <br/>
 </p>

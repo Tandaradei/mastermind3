@@ -41,8 +41,9 @@ public class Server extends NetworkParticipant {
 	}
 	
 	public void restart(){
-            closeWindow();
-            start();
+			resetPlayingField();
+            //closeWindow();
+            //startServer();
 	}
     
     private void startServer() {
@@ -100,7 +101,14 @@ public class Server extends NetworkParticipant {
             sendCommand("SETUP " + codeLength + " " + colors);
             sendCommand("GUESS");
 			playingField.setStatusText("Game set up, " + playerName + " is guessing now " + (maxAttempts > 0 ? "(attempt " + attempts+1 + " of " + maxAttempts + ")" : ""));
-			gameState = GAMESTATE.INGAME;
+			if(gameState == GAMESTATE.GAMEOVER){
+				resetPlayingField();
+				gameState = GAMESTATE.SETUP;
+			}	
+			else{
+				gameState = GAMESTATE.INGAME;
+			}
+			
         }
         else if(args[0].equals("CHECK") && gameState == GAMESTATE.INGAME){
             attempts++;
@@ -125,7 +133,7 @@ public class Server extends NetworkParticipant {
                     stop(STOPTYPE.RECEIVED);
 		}
 		else{
-                    System.err.println("Unknown command received!");
+                    System.err.println("Server: Unknown command received: "+ args[0]);
 		}
     }
     

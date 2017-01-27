@@ -3,6 +3,7 @@ package network.client;
 import java.net.*;
 
 import network.NetworkParticipant;
+import network.GAMESTATE;
 import network.STOPTYPE;
 import playingfield.PlayingField;
 import ai.MastermindAI;
@@ -62,7 +63,8 @@ public class Client extends NetworkParticipant {
     }
 	
 	public void restart(){
-           start();
+			resetPlayingField();
+			sendCommand("NEWGAME " + playerName);
 	}
     
     public void stop(STOPTYPE stopType){
@@ -112,7 +114,7 @@ public class Client extends NetworkParticipant {
             command = "";
         }
         final String[] args = command.split(" ");
-        if(args[0].equals("SETUP")){
+        if(args[0].equals("SETUP") && gameState != GAMESTATE.GAMEOVER){
             codeLength = Integer.parseInt(args[1]);
             colors = args[2];
             startPlayingField(false, "Start to guess (click on 'Help' in the MainWindow if you need)");
@@ -160,6 +162,7 @@ public class Client extends NetworkParticipant {
 			else{
 				playingField.setStatusText("Gameover without a valid reason!");
 			}
+			gameState = GAMESTATE.GAMEOVER;
 			playingField.openAgainWindow();
 			
         }
@@ -167,7 +170,7 @@ public class Client extends NetworkParticipant {
 			stop(STOPTYPE.RECEIVED);
 		}
 		else{
-			System.err.println("Unknown command received!");
+			System.err.println("Server: Unknown command received: "+ args[0]);
 		}
     }
     
