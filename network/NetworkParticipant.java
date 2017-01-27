@@ -12,7 +12,6 @@ import playingfield.PlayingFieldListener;
 
 /**
 * Base class for Server and Client
-*
 */
 
 public abstract class NetworkParticipant implements Runnable {
@@ -32,10 +31,18 @@ public abstract class NetworkParticipant implements Runnable {
     protected Queue<String> commands;
     protected Thread commandThread;
 
+	/**
+	* Creates new NetworkParticipant
+	*/
     public NetworkParticipant(){
     	commands = new LinkedList<String>();
     }
-
+	
+	/**
+	* Configure and start new playingfield
+	* @param isServer Determines if playingfield should display client/server view
+	* @param text Initial text to display in status text
+	*/
     protected void startPlayingField(boolean isServer, String text){
         playingField = new PlayingField(isServer, colors, codeLength);
         playingField.setStatusText(text);
@@ -52,7 +59,10 @@ public abstract class NetworkParticipant implements Runnable {
             
         });
     }
-
+	
+	/**
+	* Start 
+	*/
     public abstract void start();
 	
     public abstract void restart();

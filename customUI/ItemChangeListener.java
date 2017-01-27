@@ -26,7 +26,7 @@ public class ItemChangeListener implements ItemListener{
        if (event.getStateChange() == ItemEvent.SELECTED) {
           Object item = event.getItem();
           Object itemSelectable = event.getItemSelectable();
-          ((JComboBox)itemSelectable).setBackground(ComboBoxRenderer.charToColor(item.toString().charAt(0)));
+          ((JComboBox)itemSelectable).setBackground(ComboBoxRenderer.get().charToColor(item.toString().charAt(0)));
           playingField.codeChanged();
           // do something with object
        }

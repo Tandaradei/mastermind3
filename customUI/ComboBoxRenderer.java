@@ -5,7 +5,10 @@
  */
 package customUI;
 
-
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.awt.Color;
 import java.awt.Component;
 import javax.swing.JLabel;
@@ -18,24 +21,28 @@ import javax.swing.ListCellRenderer;
  */
 @SuppressWarnings("serial")
 public class ComboBoxRenderer extends JLabel implements ListCellRenderer<Object> {
-    public ComboBoxRenderer() {
+
+    private ComboBoxRenderer() {
         setOpaque(true);
+		loadColors();
     }
+	private static ComboBoxRenderer me = null;
+	
+	public static ComboBoxRenderer get(){
+		if(ComboBoxRenderer.me == null){
+			ComboBoxRenderer.me = new ComboBoxRenderer();
+		}
+		return ComboBoxRenderer.me;
+	}
     
-/*
-     * This method finds the image and text corresponding
-     * to the selected value and returns the label, set up
-     * to display the text and image.
-     */
-    
-    static Color[] colorTable ={hexToRGB("#00a300"), hexToRGB("#ee1111"), hexToRGB("#ffc40d"),
+    private Color[] colorTable ={hexToRGB("#00a300"), hexToRGB("#ee1111"), hexToRGB("#ffc40d"),
                                 hexToRGB("#2d89ef"), hexToRGB("#603cba"), hexToRGB("#1e7145"),
                                 hexToRGB("#da532c"), hexToRGB("#2b5797"), hexToRGB("#9f00a7"), 
                                 hexToRGB("#00aba9"), hexToRGB("#e3a21a"), hexToRGB("#eff4ff"),
                                 hexToRGB("#99b433"), hexToRGB("#795548"), hexToRGB("#7e3878")};
     
 	
-	static private Color hexToRGB(String hex){
+	private Color hexToRGB(String hex){
             return new Color(
                 Integer.valueOf( hex.substring( 1, 3 ), 16 ),
                 Integer.valueOf( hex.substring( 3, 5 ), 16 ),
@@ -43,14 +50,29 @@ public class ComboBoxRenderer extends JLabel implements ListCellRenderer<Object>
             );
 	}
 	
-    static private int charToIndex(char input){
+	private void loadColors(){
+		System.out.println("Load colors");
+		try (BufferedReader br = new BufferedReader(new FileReader("colors.cfg"))) {
+            String line;
+            int size = 0;
+            while ((line = br.readLine()) != null && size < 15) {
+                colorTable[size++] = hexToRGB(line);
+            }
+
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+	}
+	
+    private int charToIndex(char input){
         if(input < 'a'){
             return (int)(input - '1');
         }
         return (int)(input - 'a') + 9;
     }
     
-    static public Color charToColor(char input){
+    public Color charToColor(char input){
+		System.out.println(input + " -> " + colorTable[charToIndex(input)]);
         return colorTable[charToIndex(input)];
     }
        

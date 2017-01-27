@@ -70,7 +70,7 @@ public class Highscore{
     public void read () {
         try (BufferedReader br = new BufferedReader(new FileReader("highscore.txt"))) {
             String line;
-            size = 0;
+            int size = 0;
             while ((line = br.readLine()) != null) {
                 data[size++] = line;
             }
